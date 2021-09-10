@@ -8,6 +8,7 @@ import authRouter from "./router/authRouter.js";
 import settingRouter from "./router/settingRouter.js";
 import searchRouter from "./router/searchRouter.js";
 import orderRouter from "./router/orderRouter.js"
+
 import session from 'express-session';
 import passport from 'passport';
 import localStrategy from 'passport-local'
@@ -19,10 +20,10 @@ const GoogleStrategy = gStrategy.Strategy;
 const strategy = localStrategy.Strategy;
 import findOrCreate from 'mongoose-findorcreate'
 
-
 const app = Express();
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -32,6 +33,12 @@ app.use(session({
   saveUninitialized: false
 }));
 
+
+
+app.use("/api", authRouter);
+app.use("/api", settingRouter);
+app.use("/api", searchRouter);
+app.use("/api", orderRouter);
 
 const port = process.env.PORT || 5000;
 mongoose
