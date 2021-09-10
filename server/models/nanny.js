@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const nannySchema = new mongoose.Schema({
+  email: {
+    type: String,
+    unique: true,
+    // required: true,
+  },
   username: {
     type: String,
     unique: true,
@@ -9,11 +14,7 @@ const nannySchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  email: {
-    type: String,
-    unique: true,
-    // required: true,
-  },
+
   fullName: String,
   phoneNumber: {
     type: String,
@@ -23,6 +24,14 @@ const nannySchema = new mongoose.Schema({
     type: String,
     // required: true
   },
+  city: {
+    type: String,
+    //required:true
+  },
+  pricing: {
+    type: Number,
+    //required
+  },
   profilePicture: String,
   rating: Number,
   age: {
@@ -30,8 +39,9 @@ const nannySchema = new mongoose.Schema({
     //  required: true
   },
   availability: Boolean,
-  shiftD: String,
-  shiftW: String,
+  shiftStart: Number,
+  shiftEnd: Number,
+  shiftW: [Number],
 });
 
 export default mongoose.model("nanny", nannySchema);

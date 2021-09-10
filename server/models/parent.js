@@ -21,7 +21,7 @@ const parentSchema = new mongoose.Schema({
     city: String,
     rating: Number,
     price: [Number],
-    targeAge: Number,
+    targetAge: Number,
   }),
 });
 
