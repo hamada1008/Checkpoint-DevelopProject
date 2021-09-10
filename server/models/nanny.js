@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import passportLocalMongoose from 'passport-local-mongoose'
+import findOrCreate from 'mongoose-findorcreate'
 
 const nannySchema = new mongoose.Schema({
   email: {
@@ -6,6 +8,7 @@ const nannySchema = new mongoose.Schema({
     unique: true,
     // required: true,
   },
+  googleId: String,
   username: {
     type: String,
     unique: true,
@@ -43,5 +46,8 @@ const nannySchema = new mongoose.Schema({
   shiftEnd: Number,
   shiftW: [Number],
 });
+
+nannySchema.plugin(passportLocalMongoose);
+nannySchema.plugin(findOrCreate);
 
 export default mongoose.model("nanny", nannySchema);

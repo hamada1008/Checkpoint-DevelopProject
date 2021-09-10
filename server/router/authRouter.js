@@ -1,56 +1,58 @@
 import express from "express";
 import nanny from "../models/nanny.js";
 import parent from "../models/parent.js";
+import passport from 'passport';
+import localStrategy from 'passport-local'
+import passportLocalMongoose from 'passport-local-mongoose'
 const router = express.Router();
 
 //register
 
 router.post("/auth/register", (req, res) => {
-  const { email, password, username } = req.body;
-
-  req.body.type === "parent"
-    ? parent.create({ username, password, email }, (err, data) =>
-        err
-          ? res.status(400).send("failed to register to parents")
-          : res.status(200).send(data)
-      )
-    : nanny.create({ username, password, email }, (err, data) =>
-        err
-          ? res.status(400).send("failed to register to nannies")
-          : res.status(200).send(data)
-      );
+  const type = req.body.type === "parent" ? parent : nanny;
+  type.register(new type({ username: req.body.username, email: req.body.email }), req.body.password, (err, user) => {
+    if (err) {
+      console.log(err);
+      res.send('There was an error');
+    } else {
+      passport.authenticate('local')(req, res, () => {
+        res.send(`authenticated as ${req.body.type}`)
+      })
+    }
+  })
 });
 
 //login
 
 router.post("/auth/login", (req, res) => {
-  const { email, password } = req.body;
+  const type = req.body.type === "parent" ? parent : nanny;
+  req.login(new type({ username: req.body.username, password: req.body.password }), function (err) {
+    if (err) {
+      res.send(err.message)
+      console.log(err)
+    } else {
+      passport.authenticate("local")(req, res, () => {
+        res.send(`user ${req.body.username} authenticated`);
+      })
 
-  if (req.body.type === "parent") {
-    parent.findOne({ email }, (err, fetchedData) => {
-      if (fetchedData) {
-        if (fetchedData.password === password) {
-          res.status(200).send("logged as parent");
-        } else {
-          res.status(400).send("verify your password as parent");
-        }
-      } else {
-        res.status(400).send("invalid email");
-      }
-    });
-  } else {
-    nanny.findOne({ email }, (err, fetchedData) => {
-      if (fetchedData) {
-        if (fetchedData.password === password) {
-          res.status(200).send(data);
-        } else {
-          res.status(400).send("verify your password as nanny");
-        }
-      } else {
-        res.status(400).send("verify your email as nanny");
-      }
-    });
-  }
+    }
+  });
+});
+
+router.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] })
+);
+
+router.get('/auth/google/mybestnanny',
+  passport.authenticate('google', { failureRedirect: '/api/auth/login' }),
+  function (req, res) {
+    res.send('authentitaced with google');
+  });
+
+router.get('/auth/logout', function (req, res) {
+  req.logout();
+  res.send('logged out');
+
 });
 
 export default router;

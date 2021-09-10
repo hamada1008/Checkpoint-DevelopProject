@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import passportLocalMongoose from 'passport-local-mongoose'
+import findOrCreate from 'mongoose-findorcreate'
 
 const orderSchema = new mongoose.Schema({
   parent_id: String,
@@ -8,5 +10,6 @@ const orderSchema = new mongoose.Schema({
   totalPrice: Number,
   status: String,
 });
-
-export default order = mongoose.model("order", orderSchema);
+orderSchema.plugin(passportLocalMongoose);
+orderSchema.plugin(findOrCreate);
+export default mongoose.model("order", orderSchema);
