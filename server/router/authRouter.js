@@ -29,13 +29,13 @@ router.post("/auth/register", (req, res) => {
 //login
 
 router.post("/auth/login", (req, res) => {
+  console.log(req.body)
   const type = req.body.type === "parent" ? parent : nanny;
   req.login(
     new type({ username: req.body.username, password: req.body.password }),
     function (err) {
       if (err) {
-        res.send(err.message);
-        console.log(err);
+        res.status(404).send(err.message);
       } else {
         passport.authenticate("local")(req, res, () => {
           res.send(`user ${req.body.username} authenticated`);

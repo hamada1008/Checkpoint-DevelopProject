@@ -2,12 +2,11 @@ import Express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import googleUser from "./models/googleUser.js";
-import {} from "dotenv/config";
+import { } from "dotenv/config";
 import authRouter from "./router/authRouter.js";
 import settingRouter from "./router/settingRouter.js";
 import searchRouter from "./router/searchRouter.js";
 import orderRouter from "./router/orderRouter.js";
-
 import session from "express-session";
 import passport from "passport";
 import localStrategy from "passport-local";
@@ -22,7 +21,6 @@ import findOrCreate from "mongoose-findorcreate";
 const app = Express();
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -40,6 +38,7 @@ mongoose
   .then(() => app.listen(port, () => console.log("server is running")))
   .catch((err) => console.log(err));
 
+app.use(cors());
 passport.use(nanny.createStrategy());
 passport.use(parent.createStrategy());
 passport.serializeUser(function (user, done) {
@@ -63,6 +62,7 @@ passport.use(
     }
   )
 );
+app.use(cors())
 
 app.use("/api", authRouter);
 app.use("/api", settingRouter);
