@@ -13,7 +13,9 @@ function App() {
       <WelcomeScreen />
       <Form userIsRegistered={userIsRegistered} />
       <button onClick={() => setUserIsRegistered(!userIsRegistered)}>
-        Toggle
+        {userIsRegistered
+          ? "Already have an account?"
+          : "New to our website? Create a new account"}
       </button>
       {/* <p>{isAuth ? "you are authenticated" : "you are not authenticated"}</p> */}
     </div>
