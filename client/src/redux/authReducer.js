@@ -8,10 +8,15 @@ const initialState = {
 
 export const getAuth = createAsyncThunk(
   "auth/isAuth",
-  async (payload, { dispatch }) => {
-    console.log(payload);
-    //const {userName, password, type} = payload;
+  async (payload) => {
     await axios.post("http://localhost:5000/api/auth/login", payload);
+  }
+);
+
+export const registerAuth = createAsyncThunk(
+  "registerAuth/isAuth",
+  async (payload) => {
+    await axios.post("http://localhost:5000/api/auth/register", payload);
   }
 );
 const authReducer = createSlice({
@@ -29,7 +34,19 @@ const authReducer = createSlice({
     [getAuth.rejected]: (state) => {
       state.status = "rejected";
     },
-  },
+    [registerAuth.pending]: (state) => {
+      state.status = "loading";
+    },
+    [registerAuth.fulfilled]: (state) => {
+      state.status = "succeeded";
+      state.isAuth = true;
+    },
+    [registerAuth.rejected]: (state) => {
+      state.status = "rejected";
+    }
+
+
+  }
 });
 
 export default authReducer.reducer;

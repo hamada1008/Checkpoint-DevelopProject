@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAuth } from "../redux/authReducer";
+import { getAuth, registerAuth } from "../redux/authReducer";
 
 function Form(props) {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
 
   const handleUser = (e) => {
     setUsername(e.target.value);
@@ -14,9 +16,15 @@ function Form(props) {
   const handlePass = (e) => {
     setPassword(e.target.value);
   };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(getAuth({ username, password, type: "parent" }));
+    props.userIsRegistered ? dispatch(registerAuth({ username, password, type: "parent", email }))
+      : dispatch(getAuth({ username, password, type: "parent" }))
   };
 
   return (
@@ -35,7 +43,7 @@ function Form(props) {
       />
 
       {props.userIsRegistered && (
-        <input type="password" placeholder="Confirm Password" />
+        <input type="email" placeholder="Enter your email" onChange={handleEmail} />
       )}
 
       <button type="submit" onClick={handleSubmit}>

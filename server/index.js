@@ -62,6 +62,8 @@ passport.use(
     }
   )
 );
+
+
 app.use(cors())
 
 app.use("/api", authRouter);
