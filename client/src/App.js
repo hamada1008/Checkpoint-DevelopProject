@@ -1,20 +1,21 @@
 import React from "react";
 import Form from "./components/Form";
-import { useState } from "react"
-import { useSelector } from "react-redux"
-
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import WelcomeScreen from "./components/WelcomeScreen";
 
 function App() {
+  const { isAuth } = useSelector((state) => state.authR);
 
-  const { isAuth } = useSelector(state => state.authR)
-
-
-  const [userIsRegistered, setUserIsRegistered] = useState(false)
+  const [userIsRegistered, setUserIsRegistered] = useState(false);
   return (
     <div className="container">
+      <WelcomeScreen />
       <Form userIsRegistered={userIsRegistered} />
-      <button onClick={() => setUserIsRegistered(!userIsRegistered)}>Toggle</button>
-      <p>{isAuth ? "you are authenticated" : "you are not authenticated"}</p>
+      <button onClick={() => setUserIsRegistered(!userIsRegistered)}>
+        Toggle
+      </button>
+      {/* <p>{isAuth ? "you are authenticated" : "you are not authenticated"}</p> */}
     </div>
   );
 }
