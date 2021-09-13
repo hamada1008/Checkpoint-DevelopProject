@@ -6,22 +6,28 @@ import {
   CardActions,
   Button,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import _ from 'lodash'
 
 const ServiceCard = (props) => {
+  const history = useHistory()
+  const handleClick = () => {
+    history.push(`search/${_.kebabCase(props.nannyType)}`)
+  }
+
   return (
     <div>
       <Card>
         <CardContent>
           <Typography color="textSecondary" gutterBottom>
-            Word of the Day
+            Icon (nanny type)
           </Typography>
-          <Typography variant="h5" component="h2">
-            test
+          <Typography variant="h3" component="h2">
+            {props.nannyType}
           </Typography>
-          <Typography color="textSecondary">adjective</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button size="small" onClick={handleClick} >Find</Button>
         </CardActions>
       </Card>
     </div>

@@ -1,23 +1,32 @@
 import React from "react";
 import Form from "./components/Form";
-import { useState } from "react";
-import { useSelector } from "react-redux";
 import WelcomeScreen from "./components/WelcomeScreen";
+import { Route, Switch } from 'react-router-dom';
+import Dashboard from "./components/Dashboard";
+import SearchForm from "./components/SearchForm";
+import SearchResult from "./components/SearchResult";
 
 function App() {
-  const { isAuth } = useSelector((state) => state.authR);
 
-  const [userIsRegistered, setUserIsRegistered] = useState(false);
   return (
     <div className="container">
-      <WelcomeScreen />
-      <Form userIsRegistered={userIsRegistered} />
-      <button onClick={() => setUserIsRegistered(!userIsRegistered)}>
-        {userIsRegistered
-          ? "Already have an account?"
-          : "New to our website? Create a new account"}
-      </button>
-      {/* <p>{isAuth ? "you are authenticated" : "you are not authenticated"}</p> */}
+      <Switch>
+        <Route exact path="/">
+          <WelcomeScreen />
+          <Form />
+        </Route>
+
+        <Route path='/parent/dashboard'>
+          <Dashboard />
+        </Route>
+
+        <Route path='/parent/search/:servicetype' component={SearchForm} />
+
+        <Route path="/search/result" component={SearchResult} />
+      </Switch>
+
+
+
     </div>
   );
 }
