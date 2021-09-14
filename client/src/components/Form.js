@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAuth, registerAuth } from "../redux/authReducer";
-import { useSelector } from "react-redux"
-import { Link, useHistory } from 'react-router-dom'
+import { useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
 function Form() {
   const history = useHistory();
@@ -11,11 +11,14 @@ function Form() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [userFullname, setUserFullName] = useState("");
+  const [fullName, setFullName] = useState("");
   const { isAuth } = useSelector((state) => state.authR);
 
-  const [userIsRegistered, setUserIsRegistered] = useState(false);
-
+  const [userIsRegistered, setUserIsRegistered] = useState(true);
+  const [type, setType] = useState("");
+  const handletype = (e) => {
+    setType(e.target.value);
+  };
   const handleUser = (e) => {
     setUsername(e.target.value);
   };
@@ -27,15 +30,15 @@ function Form() {
     setEmail(e.target.value);
   };
   const handleUserFullname = (e) => {
-    setUserFullName(e.target.value);
+    setFullName(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push('/parent/dashboard')
-    // userIsRegistered
-    //   ? dispatch(registerAuth({ username, password, type: "parent", email }))
-    //   : dispatch(getAuth({ username, password, type: "parent" }));
+    history.push("/parent/dashboard");
+    userIsRegistered
+      ? dispatch(registerAuth({ username, password, fullName, type, email }))
+      : dispatch(getAuth({ username, password, type }));
   };
   return (
     <div>
@@ -55,7 +58,7 @@ function Form() {
               onChange={handleUser}
             />
             <input
-              value={userFullname}
+              value={fullName}
               type="text"
               placeholder="Full Name"
               onChange={handleUserFullname}
@@ -68,18 +71,23 @@ function Form() {
           placeholder="Password"
           onChange={handlePass}
         />
-        <label>You are ?</label>
+        {/* <label>You are ?</label>
         <label htmlFor="Parent">Parent</label>
         <input type="checkbox" name="Parent" />
         <label htmlFor="Nanny">Nanny</label>
-        <input type="checkbox" name="Nanny" />
+        <input type="checkbox" name="Nanny" /> */}
+        <input
+          type="text"
+          onChange={handletype}
+          value={type}
+          placeholder="type"
+        />
 
         {/* <Link to="/parent/dashboard"> */}
-        <button type="submit" onClick={handleSubmit} >
+        <button type="submit" onClick={handleSubmit}>
           {userIsRegistered ? "Register" : "Login"}
         </button>
         {/* </Link> */}
-
       </form>
       <button onClick={() => setUserIsRegistered(!userIsRegistered)}>
         {userIsRegistered

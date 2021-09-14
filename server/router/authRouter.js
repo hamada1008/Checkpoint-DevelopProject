@@ -11,15 +11,25 @@ const router = express.Router();
 router.post("/auth/register", (req, res) => {
   const type = req.body.type === "parent" ? parent : nanny;
   type.register(
-    new type({ username: req.body.username, email: req.body.email }),
+    new type({
+      username: req.body.username,
+      email: req.body.email,
+      fullName: req.body.fullName,
+    }),
     req.body.password,
-    (err, user) => {
+    (err) => {
       if (err) {
         console.log(err.message);
         res.send("There was an error");
       } else {
         passport.authenticate("local")(req, res, () => {
-          res.send(`authenticated as ${req.body.type}`);
+          type.findOne(
+            { username: req.body.username, fullName: req.body.fullName },
+            (err, foundItem) => {
+              res.json(foundItem);
+            }
+          );
+          // res.send(`authenticated as ${req.body.type}`);
         });
       }
     }
@@ -29,7 +39,7 @@ router.post("/auth/register", (req, res) => {
 //login
 
 router.post("/auth/login", (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const type = req.body.type === "parent" ? parent : nanny;
   req.login(
     new type({ username: req.body.username, password: req.body.password }),
