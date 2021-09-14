@@ -1,71 +1,55 @@
-import React from 'react'
+import React from "react";
+import { useHistory } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const SearchForm = ({ match }) => {
-    function getLocation() {
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
+  const history = useHistory();
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.log("Geolocation is not supported by this browser.");
     }
+  }
 
-    function showPosition(position) {
-        const msg = "Latitude: " + position.coords.latitude +
-            "Longitude: " + position.coords.longitude;
-        console.log(msg)
-    }
+  function showPosition(position) {
+    const msg =
+      "Latitude: " +
+      position.coords.latitude +
+      "Longitude: " +
+      position.coords.longitude;
+    history.push("/parent/search/results");
+  }
 
-    console.log(match)
-    return (
+  return (
+    <div>
+      <Navbar button1="Edit profile" button2="Logout" />
+      <form className="form">
+        <label>service type</label>
+        <input
+          value={match.params.servicetype}
+          type="text"
+          placeholder="age"
+          disabled
+        />
+
+        <label>Age</label>
+        <input type="text" placeholder="age" />
+        <label>Rating</label>
+        <input type="text" placeholder="rating" />
         <div>
-
-            <form className="form">
-
-                <label>service type</label>
-                <input
-                    value={match.params.servicetype}
-                    type="text"
-                    placeholder="age"
-                    disabled
-                />
-
-                <label>Age</label>
-                <input
-                    type="text"
-                    placeholder="age"
-                />
-                <label>Rating</label>
-                <input
-                    type="text"
-                    placeholder="rating"
-                />
-                <div>
-                    <label>Price</label>
-                    <input
-                        type="text"
-                        placeholder="price min"
-                    />
-                    <input
-                        type="text"
-                        placeholder="price max"
-                    />
-                </div>
-                <label>City</label>
-                <input
-                    type="text"
-                    placeholder="city"
-                />
-
-
-
-
-                <button>Submit Search</button>
-
-            </form>
-            <button onClick={getLocation}> TEST</button>
+          <label>Price</label>
+          <input type="text" placeholder="price min" />
+          <input type="text" placeholder="price max" />
         </div>
-    )
-}
+        <label>City</label>
+        <input type="text" placeholder="city" />
 
-export default SearchForm
+        <button>Submit Search</button>
+      </form>
+      <button onClick={getLocation}> TEST</button>
+    </div>
+  );
+};
+
+export default SearchForm;

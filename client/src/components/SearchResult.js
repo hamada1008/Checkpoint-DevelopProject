@@ -1,80 +1,81 @@
-
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
-    withGoogleMap,
-    withScriptjs,
-    GoogleMap,
-    Marker,
-    InfoWindow
-} from "react-google-maps";
-import testData from '../Data/testMap'
-import { } from "dotenv/config";
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
+import testMap from "../Data/testMap";
 
-const Map = () => {
-    const [selectedNanny, setSelectedNanny] = useState(null);
+const SearchResult = () => {
+  const mapContainerStyle = {
+    height: "100vh",
+    width: "100vw",
+  };
 
-    useEffect(() => {
-        const listener = e => {
-            if (e.key === "Escape") {
-                setSelectedNanny(null);
-            }
-        };
-        window.addEventListener("keydown", listener);
+  const [selectedNanny, setSelectedNanny] = useState(null);
+  const [center, setCenter] = useState({ lat: 36.457526, lng: 10.778335 });
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  });
+  useEffect(() => {
+    const listener = (e) => {
+      if (e.key === "Escape") {
+        setSelectedNanny(null);
+      }
+    };
+    window.addEventListener("keydown", listener);
 
-        return () => {
-            window.removeEventListener("keydown", listener);
-        };
-    }, []);
-    return (
-        <GoogleMap
-            defaultZoom={15}
-            defaultCenter={{ lat: 36.457526, lng: 10.778335 }} >
-            {testData.map(el => (
-                <Marker
-                    key={el.id}
-                    position={{
-                        lng: el.lat,
-                        lat: el.lon
-                    }}
-                    onClick={(e) => {
-                        setSelectedNanny(el);
-                    }}
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
+  if (loadError) return "Error loading maps";
+  if (!isLoaded) return "loading maps";
 
-                />
-            ))}
-            {selectedNanny && (
-                <InfoWindow
-                    onCloseClick={() => {
+  return (
+    <GoogleMap
+      id="map"
+      mapContainerStyle={mapContainerStyle}
+      zoom={15}
+      center={center}
+      onClick={() => setSelectedNanny(null)}
+    >
+      {testMap.map((el) => (
+        <Marker
+          key={el.id}
+          position={{
+            lng: el.lat,
+            lat: el.lon,
+          }}
+          onClick={() => {
+            setSelectedNanny(el);
+            setCenter({ lng: el.lat, lat: el.lon });
+          }}
+        />
+      ))}
 
-                        setSelectedNanny(null);
-                    }}
-                    position={{
-                        lat: selectedNanny.lon,
-                        lng: selectedNanny.lat
-                    }}
-                >
-                    <div>
-                        <h2>{selectedNanny.id}</h2>
-                        <p>world!</p>
-                    </div>
-
-                </InfoWindow>
-            )}
-        </GoogleMap>
-    )
+      {selectedNanny && (
+        <InfoWindow
+          onCloseClick={() => {
+            setSelectedNanny(null);
+          }}
+          position={{
+            lat: selectedNanny.lon + 0.0015,
+            lng: selectedNanny.lat,
+          }}
+        >
+          <div>
+            <h3>{selectedNanny.name}</h3>
+            <span>${selectedNanny.price}</span>
+            <Link to={`/nanny/profile/${selectedNanny.id}`}>
+              <p> See Profile</p>
+            </Link>
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
+  );
 };
-const MapWrapped = withScriptjs(withGoogleMap(Map));
-export default function SearchResult() {
-    return (
-        <div style={{ width: "100vw", height: "100vh" }}>
-            <MapWrapped
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_KEY}`}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `100%` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-            />
-        </div>
-    );
-}
-
-
+export default SearchResult;
