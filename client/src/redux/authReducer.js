@@ -3,59 +3,72 @@ import axios from "axios";
 
 const initialState = {
   status: null,
-  isAuth: false,
-  userData: {},
+  token: null,
 };
 
-export const getAuth = createAsyncThunk("auth/isAuth", async (payload) => {
-  await axios.post("http://localhost:5000/api/auth/login", payload);
+export const loginAuth = createAsyncThunk("auth/isAuth", async (payload) => {
+  const token = await axios.post(
+    "http://localhost:5000/api/auth/login",
+    payload
+  );
+  return token;
 });
 
 export const registerAuth = createAsyncThunk(
   "registerAuth/isAuth",
   async (payload) => {
-    const data = await axios.post(
+    const token = await axios.post(
       "http://localhost:5000/api/auth/register",
       payload
     );
-    // console.log(data);
-
-    return data;
+    return token;
   }
 );
+export const logoutAuth = createAsyncThunk("logoutAuth/isAuth", async () => {
+  await axios.get("http://localhost:5000/api/auth/logout");
+});
 
 const authReducer = createSlice({
   name: "authentication",
   initialState,
 
   extraReducers: {
-    [getAuth.pending]: (state) => {
+    [loginAuth.pending]: (state) => {
       state.status = "loading";
     },
-    [getAuth.fulfilled]: (state) => {
+    [loginAuth.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.isAuth = true;
+      state.token = action.payload.data;
+      localStorage.setItem("token", state.token);
     },
-    [getAuth.rejected]: (state) => {
+    [loginAuth.rejected]: (state) => {
       state.status = "rejected";
+      state.token = null;
+      localStorage.clear();
     },
     [registerAuth.pending]: (state) => {
       state.status = "loading";
     },
     [registerAuth.fulfilled]: (state, action) => {
-      console.log(action);
       state.status = "succeeded";
-      state.isAuth = true;
-      localStorage.setItem("isAuth", state.isAuth);
-      localStorage.setItem("id", action.payload.data._id);
-      localStorage.setItem("type", action.meta.arg.type);
-
-      // state.userData = { ...action.payload.data };
+      state.token = action.payload.data;
+      localStorage.setItem("token", state.token);
     },
     [registerAuth.rejected]: (state) => {
       state.status = "rejected";
-      state.isAuth = false;
-      localStorage.setItem("isAuth", state.isAuth);
+      state.token = null;
+      localStorage.clear();
+    },
+    [logoutAuth.pending]: (state) => {
+      state.status = "loading";
+    },
+    [logoutAuth.fulfilled]: (state) => {
+      state.status = "succeeded";
+      state.token = null;
+      localStorage.clear();
+    },
+    [logoutAuth.rejected]: (state) => {
+      state.status = "rejected";
     },
   },
 });

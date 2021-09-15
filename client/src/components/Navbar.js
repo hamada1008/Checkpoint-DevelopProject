@@ -7,15 +7,21 @@ import {
   Button,
 } from "@material-ui/core";
 import { useHistory } from "react-router";
+import { logoutAuth } from "../redux/authReducer";
+import { useDispatch } from "react-redux";
 
 const Navbar = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const handleFirstClick = () => {
     props.button1 === "Edit profile" && history.push("/profile");
   };
-  //   const handleSecondClick = () => {
-  //     props.button1 === "About Us" ? <Link></Link> : <Link></Link>
-  //   };
+  const handleSecondClick = () => {
+    if (props.button2 === "Logout") {
+      dispatch(logoutAuth());
+      history.push("/");
+    }
+  };
 
   return (
     <AppBar position="static">
@@ -25,7 +31,9 @@ const Navbar = (props) => {
         <Button color="inherit" onClick={handleFirstClick}>
           {props.button1}
         </Button>
-        <Button color="inherit">{props.button2}</Button>
+        <Button color="inherit" onClick={handleSecondClick}>
+          {props.button2}
+        </Button>
       </Toolbar>
     </AppBar>
   );

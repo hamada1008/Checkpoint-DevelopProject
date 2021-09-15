@@ -1,75 +1,66 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAuth, registerAuth } from "../redux/authReducer";
+import { loginAuth, registerAuth } from "../redux/authReducer";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
 function Form() {
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
-  const { isAuth } = useSelector((state) => state.authR);
-
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    email: "",
+    fullName: "",
+    type: "",
+  });
   const [userIsRegistered, setUserIsRegistered] = useState(true);
-  const [type, setType] = useState("");
-  const handletype = (e) => {
-    setType(e.target.value);
-  };
-  const handleUser = (e) => {
-    setUsername(e.target.value);
-  };
-  const handlePass = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-  const handleUserFullname = (e) => {
-    setFullName(e.target.value);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     history.push("/parent/dashboard");
     userIsRegistered
-      ? dispatch(registerAuth({ username, password, fullName, type, email }))
-      : dispatch(getAuth({ username, password, type }));
+      ? dispatch(registerAuth(formData))
+      : dispatch(loginAuth(formData));
   };
   return (
     <div>
       <form className="form">
         <input
-          type="email"
-          placeholder="Enter your email"
-          onChange={handleEmail}
+          value={formData.username}
+          type="text"
+          placeholder="Username"
+          onChange={(e) =>
+            setFormData({ ...formData, username: e.target.value })
+          }
         />
-
         {userIsRegistered && (
           <div>
             <input
-              value={username}
-              type="text"
-              placeholder="Username"
-              onChange={handleUser}
+              type="email"
+              placeholder="Enter your email"
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
+
             <input
-              value={fullName}
+              value={formData.fullName}
               type="text"
               placeholder="Full Name"
-              onChange={handleUserFullname}
+              onChange={(e) =>
+                setFormData({ ...formData, fullName: e.target.value })
+              }
             />
           </div>
         )}
         <input
-          value={password}
+          value={formData.password}
           type="password"
           placeholder="Password"
-          onChange={handlePass}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
         />
         {/* <label>You are ?</label>
         <label htmlFor="Parent">Parent</label>
@@ -78,8 +69,8 @@ function Form() {
         <input type="checkbox" name="Nanny" /> */}
         <input
           type="text"
-          onChange={handletype}
-          value={type}
+          onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+          value={formData.type}
           placeholder="type"
         />
 

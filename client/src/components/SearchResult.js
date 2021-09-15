@@ -69,7 +69,7 @@ const SearchResult = () => {
           <div>
             <h3>{selectedNanny.name}</h3>
             <span>${selectedNanny.price}</span>
-            <Link to={`/nanny/profile/${selectedNanny.id}`}>
+            <Link to={`/parent/search/results/profile/${selectedNanny.id}`}>
               <p> See Profile</p>
             </Link>
           </div>

@@ -2,22 +2,21 @@ import Express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import googleUser from "./models/googleUser.js";
-import { } from "dotenv/config";
+import {} from "dotenv/config";
 import authRouter from "./router/authRouter.js";
 import settingRouter from "./router/settingRouter.js";
 import searchRouter from "./router/searchRouter.js";
 import orderRouter from "./router/orderRouter.js";
 import session from "express-session";
 import passport from "passport";
-import localStrategy from "passport-local";
+import Strategy from "passport-local";
 import passportLocalMongoose from "passport-local-mongoose";
 import nanny from "./models/nanny.js";
 import parent from "./models/parent.js";
 import gStrategy from "passport-google-oauth20";
 const GoogleStrategy = gStrategy.Strategy;
-const strategy = localStrategy.Strategy;
+const localStrategy = Strategy.Strategy;
 import findOrCreate from "mongoose-findorcreate";
-
 const app = Express();
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
@@ -27,7 +26,7 @@ app.use(passport.session());
 app.use(
   session({
     secret: "Our little secret.",
-    resave: false,
+    resave: true,
     saveUninitialized: false,
   })
 );
@@ -40,14 +39,38 @@ mongoose
 
 app.use(cors());
 passport.use(nanny.createStrategy());
+
 passport.use(parent.createStrategy());
+
+// passport.use(
+//   new localStrategy(
+//     {
+//       usernameField: "email",
+//       passwordField: "password",
+//     },
+//     function (username, password, done) {
+//       parent.findOne({ username: username }, function (err, user) {
+//         if (err) {
+//           return done(err);
+//         }
+//         if (!user) {
+//           return done(null, false);
+//         }
+//         if (!user.verifyPassword(password)) {
+//           return done(null, false);
+//         }
+//         return done(null, user);
+//       });
+//     }
+//   )
+// );
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
 passport.deserializeUser(function (user, done) {
   done(null, user);
 });
-
 passport.use(
   new GoogleStrategy(
     {
@@ -63,8 +86,7 @@ passport.use(
   )
 );
 
-
-app.use(cors())
+app.use(cors());
 
 app.use("/api", authRouter);
 app.use("/api", settingRouter);
