@@ -41,27 +41,31 @@ mongoose
 app.use(cors());
 // passport.use((parent && nanny).createStrategy());
 // passport.use(nanny.createStrategy());
+
+passport.use("parentStrategy", new LocalStrategy(parent.authenticate()));
+passport.use("nannyStrategy", new LocalStrategy(nanny.authenticate()));
+
 // if (bcrypt.compare(password, user.password))
-passport.use(
-  new LocalStrategy(function (username, password, done) {
-    parent.findOne({ username: username }, function (err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false, { message: "Incorrect username." });
-      }
-      if (
-        bcrypt.compare(password, user.password, (err, result) =>
-          console.log(err, result)
-        )
-      ) {
-        return done(null, false, { message: "Incorrect password." });
-      }
-      return done(null, user);
-    });
-  })
-);
+// passport.use(
+//   new LocalStrategy(function (username, password, done) {
+//     parent.findOne({ username: username }, function (err, user) {
+//       if (err) {
+//         return done(err);
+//       }
+//       if (!user) {
+//         return done(null, false, { message: "Incorrect username." });
+//       }
+//       if (
+//         bcrypt.compare(password, user.password, (err, result) =>
+//           console.log(err, result)
+//         )
+//       ) {
+//         return done(null, false, { message: "Incorrect password." });
+//       }
+//       return done(null, user);
+//     });
+//   })
+// );
 
 passport.serializeUser(function (user, done) {
   done(null, user);

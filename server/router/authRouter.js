@@ -24,7 +24,7 @@ router.post("/auth/register", (req, res) => {
         console.log(err);
         res.send("There was an error");
       } else {
-        passport.authenticate("local")(req, res, () => {
+        passport.authenticate(`${req.body.type}Strategy`)(req, res, () => {
           type.findOne(
             { username: req.body.username, fullName: req.body.fullName },
             { password: 0 },
@@ -59,7 +59,7 @@ router.post("/auth/login", (req, res) => {
       if (err) {
         res.status(404).send(err.message);
       } else {
-        passport.authenticate("local")(req, res, () => {
+        passport.authenticate(`${req.body.type}Strategy`)(req, res, () => {
           const userData = req.session.passport.user;
           const userDataWithType = {
             _id: userData._id,
