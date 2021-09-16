@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import googleUser from "./models/googleUser.js";
 import {} from "dotenv/config";
+import bcrypt from "bcrypt";
 import authRouter from "./router/authRouter.js";
 import settingRouter from "./router/settingRouter.js";
 import searchRouter from "./router/searchRouter.js";
@@ -15,7 +16,7 @@ import nanny from "./models/nanny.js";
 import parent from "./models/parent.js";
 import gStrategy from "passport-google-oauth20";
 const GoogleStrategy = gStrategy.Strategy;
-const localStrategy = Strategy.Strategy;
+const LocalStrategy = Strategy.Strategy;
 import findOrCreate from "mongoose-findorcreate";
 const app = Express();
 app.use(Express.json());
@@ -38,32 +39,29 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(cors());
-passport.use(nanny.createStrategy());
-
-passport.use(parent.createStrategy());
-
-// passport.use(
-//   new localStrategy(
-//     {
-//       usernameField: "email",
-//       passwordField: "password",
-//     },
-//     function (username, password, done) {
-//       parent.findOne({ username: username }, function (err, user) {
-//         if (err) {
-//           return done(err);
-//         }
-//         if (!user) {
-//           return done(null, false);
-//         }
-//         if (!user.verifyPassword(password)) {
-//           return done(null, false);
-//         }
-//         return done(null, user);
-//       });
-//     }
-//   )
-// );
+// passport.use((parent && nanny).createStrategy());
+// passport.use(nanny.createStrategy());
+// if (bcrypt.compare(password, user.password))
+passport.use(
+  new LocalStrategy(function (username, password, done) {
+    parent.findOne({ username: username }, function (err, user) {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, { message: "Incorrect username." });
+      }
+      if (
+        bcrypt.compare(password, user.password, (err, result) =>
+          console.log(err, result)
+        )
+      ) {
+        return done(null, false, { message: "Incorrect password." });
+      }
+      return done(null, user);
+    });
+  })
+);
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -71,6 +69,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
   done(null, user);
 });
+
 passport.use(
   new GoogleStrategy(
     {

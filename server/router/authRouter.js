@@ -2,8 +2,6 @@ import express from "express";
 import nanny from "../models/nanny.js";
 import parent from "../models/parent.js";
 import passport from "passport";
-import localStrategy from "passport-local";
-import passportLocalMongoose from "passport-local-mongoose";
 import jwt from "jsonwebtoken";
 import {} from "dotenv/config";
 const router = express.Router();
@@ -11,6 +9,7 @@ const router = express.Router();
 //register
 
 router.post("/auth/register", (req, res) => {
+  console.log(req.body);
   const type = req.body.type === "parent" ? parent : nanny;
   const globalType = req.body.type;
   type.register(
@@ -22,7 +21,7 @@ router.post("/auth/register", (req, res) => {
     req.body.password,
     (err) => {
       if (err) {
-        console.log(err.message);
+        console.log(err);
         res.send("There was an error");
       } else {
         passport.authenticate("local")(req, res, () => {
@@ -89,6 +88,17 @@ router.get(
     res.send("authentitaced with google");
   }
 );
+
+router.post("/auth/token", (req, res) => {
+  try {
+    const decoded = jwt.verify(req.body?.token, process.env.ENCRYPTION_KEY);
+    if (decoded) {
+      res.json(decoded);
+    }
+  } catch (err) {
+    res.send(null);
+  }
+});
 
 router.get("/auth/logout", function (req, res) {
   req.logout();

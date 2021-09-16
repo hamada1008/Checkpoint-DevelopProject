@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
-import passportLocalMongoose from 'passport-local-mongoose'
-import findOrCreate from 'mongoose-findorcreate'
+import passportLocalMongoose from "passport-local-mongoose";
+import findOrCreate from "mongoose-findorcreate";
+import passport from "passport";
+
 const parentSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
-  }, googleId: String,
+  },
+  googleId: String,
   password: {
     type: String,
     // required: true,
@@ -25,6 +28,9 @@ const parentSchema = new mongoose.Schema({
     targetAge: Number,
   }),
 });
-parentSchema.plugin(passportLocalMongoose);
+parentSchema.plugin(
+  passportLocalMongoose
+  // { usernameField: "email" }
+);
 parentSchema.plugin(findOrCreate);
 export default mongoose.model("parent", parentSchema);

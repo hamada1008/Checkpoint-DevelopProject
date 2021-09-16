@@ -1,50 +1,72 @@
 import React, { useEffect } from "react";
 import Form from "./components/Form";
 import WelcomeScreen from "./components/WelcomeScreen";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import SearchForm from "./components/SearchForm";
 import SearchResult from "./components/SearchResult";
 import NannyProfile from "./components/NannyProfile";
 import EditProfile from "./components/EditProfile";
-import jwt from "jsonwebtoken";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken } from "./redux/authReducer";
 
 function App() {
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   console.log(token);
-  //   var decoded =jwt.verify(
-  //     token,
-  //     process.env.REACT_APP_SECRET_ENCRYPTION_KEY
-  //   );
-  //   console.log(decoded);
-  // }, []);
+  const token = useSelector((state) => state.authR.token);
+  const userData = useSelector((state) => state.authR.userData);
+  const isLoading = useSelector((state) => state.authR.status);
 
+  const dispatch = useDispatch();
+  //useeffect = blocking call
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    dispatch(getToken({ token }));
+    console.log("dispatch done");
+  }, [token]);
+
+  console.log(isLoading);
   return (
     <div className="container">
-      {
-        <Switch>
-          <Route exact path="/">
-            <WelcomeScreen />
-            <Form />
-          </Route>
+      <Switch>
+        <Route exact path="/">
+          <WelcomeScreen />
+          <Form />
+        </Route>
+        {userData?.type === "parent" ? (
+          <>
+            <Route path="/parent/dashboard">
+              <Dashboard type="parent" />
+            </Route>
 
-          <Route path="/parent/dashboard">
-            <Dashboard type="parent" />
-          </Route>
-          <Route path="/nanny/dashboard">
-            <Dashboard type="nanny" />
-          </Route>
+            <Route path="/parent/search/results" component={SearchResult} />
+            <Route path="/parent/search/:servicetype" component={SearchForm} />
+            <Route
+              path="/parent/search/results/profile/:nanny_id"
+              component={NannyProfile}
+            />
+          </>
+        ) : (
+          <Redirect to="/" />
+        )}
 
-          <Route path="/parent/search/results" component={SearchResult} />
-          <Route path="/parent/search/:servicetype" component={SearchForm} />
-          <Route
-            path="/parent/search/results/profile/:nanny_id"
-            component={NannyProfile}
-          />
+        {isLoading !== "loading" ? (
+          userData?.type === "nanny" ? (
+            <>
+              <Route path="/nanny/dashboard">
+                <Dashboard type="nanny" />
+              </Route>
+            </>
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : null}
+
+        {userData ? (
           <Route path="/profile" component={EditProfile} />
-        </Switch>
-      }
+        ) : (
+          <Redirect to="/" />
+        )}
+      </Switch>
     </div>
   );
 }
