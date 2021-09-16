@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Form from "./components/Form";
 import WelcomeScreen from "./components/WelcomeScreen";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import SearchForm from "./components/SearchForm";
 import SearchResult from "./components/SearchResult";
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "./redux/authReducer";
 
 function App() {
+  const history = useHistory();
   const token = useSelector((state) => state.authR.token);
   const userData = useSelector((state) => state.authR.userData);
   const isLoading = useSelector((state) => state.authR.status);
@@ -23,15 +24,28 @@ function App() {
     dispatch(getToken({ token }));
     console.log("dispatch done");
   }, [token]);
-
-  console.log(isLoading);
-  return (
-    <div className="container">
+  const localToken = localStorage.getItem("token");
+  const redirectDashboard = () => {
+    history.push(`/${userData?.type}/dashboard`);
+  };
+  const redirectHome = () => {
+    history.push("/");
+  };
+  console.log(userData);
+  if (isLoading === "loading") return <h1>LOADING</h1>;
+  // maybe add if userData exists with loading
+  else
+    return (
       <Switch>
-        <Route exact path="/">
-          <WelcomeScreen />
-          <Form />
-        </Route>
+        {userData?.type ? (
+          redirectDashboard()
+        ) : (
+          <Route exact path="/">
+            <WelcomeScreen />
+            <Form />
+          </Route>
+        )}
+
         {userData?.type === "parent" ? (
           <>
             <Route path="/parent/dashboard">
@@ -44,31 +58,25 @@ function App() {
               path="/parent/search/results/profile/:nanny_id"
               component={NannyProfile}
             />
+            <Route path="/profile" component={EditProfile} />
           </>
         ) : (
-          <Redirect to="/" />
+          redirectDashboard()
         )}
-
-        {isLoading !== "loading" ? (
-          userData?.type === "nanny" ? (
-            <>
-              <Route path="/nanny/dashboard">
-                <Dashboard type="nanny" />
-              </Route>
-            </>
-          ) : (
-            <Redirect to="/" />
-          )
-        ) : null}
-
-        {userData ? (
-          <Route path="/profile" component={EditProfile} />
+        {userData?.type === "nanny" ? (
+          <>
+            <Route path="/nanny/dashboard">
+              <Dashboard type="nanny" />
+            </Route>
+            <Route path="/profile" component={EditProfile} />
+          </>
         ) : (
-          <Redirect to="/" />
+          redirectDashboard()
         )}
+
+        {!localToken && redirectHome()}
       </Switch>
-    </div>
-  );
+    );
 }
 
 export default App;

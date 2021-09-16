@@ -30,7 +30,7 @@ const parentSchema = new mongoose.Schema({
 });
 parentSchema.plugin(
   passportLocalMongoose
-  // { usernameField: "email" }
+  //{ usernameField: "email" }
 );
 parentSchema.plugin(findOrCreate);
 export default mongoose.model("parent", parentSchema);
