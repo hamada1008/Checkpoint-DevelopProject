@@ -6,7 +6,6 @@ const initialState = {
   token: null,
   userData: null,
 };
-
 export const loginAuth = createAsyncThunk("auth/isAuth", async (payload) => {
   const token = await axios.post(
     "http://localhost:5000/api/auth/login",
