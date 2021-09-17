@@ -9,7 +9,6 @@ const router = express.Router();
 //register
 
 router.post("/auth/register", (req, res) => {
-  console.log(req.body);
   const type = req.body.type === "parent" ? parent : nanny;
   const globalType = req.body.type;
   type.register(

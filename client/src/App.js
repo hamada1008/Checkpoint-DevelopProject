@@ -22,47 +22,54 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     dispatch(getToken({ token }));
-    console.log("dispatch done");
   }, [token]);
-  const localToken = localStorage.getItem("token");
   const redirectDashboard = () => {
     history.push(`/${userData?.type}/dashboard`);
   };
   const redirectHome = () => {
-    history.push("/");
+    history.replace("/");
   };
-  console.log(userData);
   if (isLoading === "loading") return <h1>LOADING</h1>;
   // maybe add if userData exists with loading
-  else
+  if (isLoading !== "loading" && !userData) {
+    return window.location.pathname !== "/" ? (
+      redirectHome()
+    ) : (
+      <Route exact path="/">
+        <WelcomeScreen />
+        <Form />
+      </Route>
+    );
+  } else
     return (
       <Switch>
-        {userData?.type ? (
-          redirectDashboard()
-        ) : (
-          <Route exact path="/">
-            <WelcomeScreen />
-            <Form />
-          </Route>
-        )}
-
         {userData?.type === "parent" ? (
           <>
             <Route path="/parent/dashboard">
               <Dashboard type="parent" />
             </Route>
 
-            <Route path="/parent/search/results" component={SearchResult} />
-            <Route path="/parent/search/:servicetype" component={SearchForm} />
             <Route
+              exact
+              path="/parent/search/results"
+              component={SearchResult}
+            />
+            <Route
+              exact
+              path="/parent/search/:servicetype"
+              component={SearchForm}
+            />
+            <Route
+              exact
               path="/parent/search/results/profile/:nanny_id"
               component={NannyProfile}
             />
-            <Route path="/profile" component={EditProfile} />
+            <Route exact path="/profile" component={EditProfile} />
           </>
         ) : (
           redirectDashboard()
         )}
+
         {userData?.type === "nanny" ? (
           <>
             <Route path="/nanny/dashboard">
@@ -73,8 +80,7 @@ function App() {
         ) : (
           redirectDashboard()
         )}
-
-        {!localToken && redirectHome()}
+        {userData?.type && redirectDashboard()}
       </Switch>
     );
 }
