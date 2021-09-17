@@ -29,9 +29,9 @@ function App() {
   const redirectHome = () => {
     history.replace("/");
   };
-  if (isLoading === "loading") return <h1>LOADING</h1>;
+  // if (isLoading === "loading") return <h1>LOADING</h1>;
   // maybe add if userData exists with loading
-  if (isLoading !== "loading" && !userData) {
+  if (!userData) {
     return window.location.pathname !== "/" ? (
       redirectHome()
     ) : (
