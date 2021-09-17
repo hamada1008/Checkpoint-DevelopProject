@@ -18,6 +18,7 @@ import gStrategy from "passport-google-oauth20";
 const GoogleStrategy = gStrategy.Strategy;
 const LocalStrategy = Strategy.Strategy;
 import findOrCreate from "mongoose-findorcreate";
+import order from "./models/order.js";
 const app = Express();
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
