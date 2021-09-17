@@ -3,7 +3,7 @@ import nanny from "../models/nanny.js";
 import parent from "../models/parent.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
-import {} from "dotenv/config";
+import { } from "dotenv/config";
 const router = express.Router();
 
 //register
@@ -74,6 +74,7 @@ router.post("/auth/login", (req, res) => {
     }
   );
 });
+
 
 router.get(
   "/auth/google",
