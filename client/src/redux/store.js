@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authReducer";
-const store = configureStore({ reducer: { authR: authReducer } });
+import editProfileReducer from "./editProfileReducer";
+const store = configureStore({ reducer: { authR: authReducer, editProfileReducer } });
 export default store;
