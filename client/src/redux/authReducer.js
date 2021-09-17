@@ -48,7 +48,8 @@ const authReducer = createSlice({
       state.token = action.payload.data;
       localStorage.setItem("token", state.token);
     },
-    [loginAuth.rejected]: (state) => {
+    [loginAuth.rejected]: (state, action) => {
+      console.log(action)
       state.status = "rejected";
       state.token = null;
       localStorage.clear();

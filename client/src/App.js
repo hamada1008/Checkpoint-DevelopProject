@@ -32,7 +32,9 @@ function App() {
   // if (isLoading === "loading") return <h1>LOADING</h1>;
   // maybe add if userData exists with loading
   if (!userData) {
+
     return window?.location?.pathname !== "/" ? (
+
       redirectHome()
     ) : (
       <Route exact path="/">
