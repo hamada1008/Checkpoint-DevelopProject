@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
 const initialState = {
   status: "loading",
   token: null,
   userData: null,
+
 };
 export const loginAuth = createAsyncThunk("auth/isAuth", async (payload) => {
   const token = await axios.post(

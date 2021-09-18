@@ -57,39 +57,39 @@ const findInPost = (type, el) => {
     }
   });
 };
-router.post("/order/fetch", (req, res) => {
-  if (req.body.type === "parent") {
-    var allData = [];
+// router.post("/order/fetch", (req, res) => {
+//   if (req.body.type === "parent") {
+//     var allData = [];
 
-    order.find({ parent_id: req.body.id }, (err, data) => {
-      if (err) {
-        res.status(404).send(err);
-      } else {
-        console.log(data);
-        allData = data.map((el, index) => {
-          // const foundData = findInPost(nanny, el);
-          // console.log(foundData);
-          nanny
-            .findById(el.nanny_id, { fullName: 1, city: 1 })
-            .then((data) => {
-              var nannyData = data;
-              console.log(nannyData);
-            })
+//     order.find({ parent_id: req.body.id }, (err, data) => {
+//       if (err) {
+//         res.status(404).send(err);
+//       } else {
+//         console.log(data);
+//         allData = data.map((el, index) => {
+//           // const foundData = findInPost(nanny, el);
+//           // console.log(foundData);
+//           nanny
+//             .findById(el.nanny_id, { fullName: 1, city: 1 })
+//             .then((data) => {
+//               var nannyData = data;
+//               console.log(nannyData);
+//             })
 
-            .catch((err) => console.log(err));
-        });
-        console.log(nannyData);
-        // const nannyFullName = nannyData.fullName;
-        // const nannyCity = nannyData.city;
-        // // el["nannyFullName"] = nannyFullName;
-        // data[index].nannyCity = nannyCity;
+//             .catch((err) => console.log(err));
+//         });
+//         console.log(nannyData);
+//         // const nannyFullName = nannyData.fullName;
+//         // const nannyCity = nannyData.city;
+//         // // el["nannyFullName"] = nannyFullName;
+//         // data[index].nannyCity = nannyCity;
 
-        console.log(allData);
-        res.status(200).send(allData);
-      }
-    });
-  }
-});
+//         console.log(allData);
+//         res.status(200).send(allData);
+//       }
+//     });
+//   }
+// });
 
 // } else {
 //   var parentData;

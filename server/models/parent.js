@@ -19,14 +19,18 @@ const parentSchema = new mongoose.Schema({
     // required: true,
   },
   fullName: String,
-  phoneNumber: String,
-  defaultSearchSettings: new mongoose.Schema({
-    region: String,
-    city: String,
-    rating: Number,
-    price: [Number],
-    targetAge: Number,
-  }),
+  phone: String,
+  age: String,
+
+
+  city: String,
+  rating: Number,
+  priceMin: Number,
+  priceMax: Number,
+  NannyPrice: Number,
+
+
+
 });
 parentSchema.plugin(
   passportLocalMongoose
