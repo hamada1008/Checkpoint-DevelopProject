@@ -3,13 +3,26 @@ import { useHistory } from "react-router";
 import Navbar from "./Navbar";
 import shoppingItems from "../Data/shoppingItems";
 import ShoppingCart from "./ShoppingCart";
+import { createOrder } from "../redux/orderReducer";
+import { useDispatch, useSelector } from "react-redux";
 
-const NannyProfile = () => {
+const NannyProfile = (match) => {
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.authR.userData);
   const handleOrder = () => {
-    //onclick verify then dispatch order at desired date
-    // CALENDAR API
+    const nanny_id = match.match.params.nanny_id;
+    // CALENDAR API for date
+    dispatch(
+      createOrder({
+        parent_id: userData._id,
+        nanny_id,
+        orderDate: new Date(),
+        productsPurchased: ["pucifier", "lollipop"],
+        totalPrice: 200,
+      })
+    );
+
     history.replace("/parent/dashboard");
   };
 
