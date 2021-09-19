@@ -20,10 +20,12 @@ const parentSchema = new mongoose.Schema({
   },
   fullName: String,
   phone: String,
-  age: String,
+  age: Number,
 
 
   city: String,
+  lat: Number,
+  lng: Number,
   rating: Number,
   priceMin: Number,
   priceMax: Number,

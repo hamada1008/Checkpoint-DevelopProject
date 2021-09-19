@@ -51,6 +51,7 @@ const editProfileReducer = createSlice({
     },
     [getEditedProfileData.rejected]: (state) => {
       state.status = "rejected";
+      state.userDataAfterUpdate = initialState.userDataAfterUpdate
     },
   },
 });

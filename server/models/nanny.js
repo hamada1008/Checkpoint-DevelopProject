@@ -31,6 +31,8 @@ const nannySchema = new mongoose.Schema({
     type: String,
     //required:true
   },
+  lat: Number,
+  lng: Number,
   pricing: {
     type: Number,
     //required
