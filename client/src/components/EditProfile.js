@@ -3,41 +3,24 @@ import { useHistory } from "react-router-dom";
 import Navbar from "./Navbar";
 import { editProfile, getEditedProfileData } from "../redux/editProfileReducer";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios"
 
 const EditProfile = () => {
+  const dispatch = useDispatch();
+
   const userDataAfterUpdate = useSelector(
     (state) => state.editProfileReducer.userDataAfterUpdate
   );
-  const isLoading = useSelector((state) => state.editProfileReducer.status);
+  const userData = useSelector((state) => state.authR.userData);
+  const type = userData.type
 
   const history = useHistory();
-  //   const type = user.type;
-  const type = "parent";
-
   const [formData, setFormData] = useState({});
-  //   {
-  //   fullName: '',
-  //   phone: '',
-  //   rating: '',
-  //   age: '',
-  //   priceMin: '',
-  //   priceMax: '',
-  //   nannyPrice: '',
-  //   profilePicture: '',
-  //   city: ''
-  // }
-  // );
-
   const [errorMessage, setErrorMessage] = useState({
-    errorfullName: "",
-    errorPhone: "",
-    errorRating: "",
-    errorAge: "",
-    errorPrice: "",
-    errorCity: "",
   });
 
-  function getLocation() {
+  function getLocation(e) {
+    e.preventDefault()
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
@@ -46,15 +29,11 @@ const EditProfile = () => {
   }
 
   function showPosition(position) {
-    const msg =
-      "Latitude: " +
-      position.coords.latitude +
-      "Longitude: " +
-      position.coords.longitude;
-    history.push("/parent/search/results");
-  }
-  const userData = useSelector((state) => state.authR.userData);
-  const dispatch = useDispatch();
+    setFormData({ ...formData, lng: position.coords.longitude, lat: position.coords.latitude })
+
+  };
+
+
   const handleSave = (e) => {
     e.preventDefault();
     if (!formData.fullName) {
@@ -87,6 +66,16 @@ const EditProfile = () => {
   useEffect(() => {
     setFormData(userDataAfterUpdate);
   }, [userDataAfterUpdate]);
+  useEffect(() => {
+    console.log(formData)
+    formData.lng && axios.get(`https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData.lat}&lon=${formData.lng}&format=json`)
+      .then(data => {
+
+        setFormData({ ...formData, city: data.data.display_name })
+      }
+      )
+      .catch(err => console.log(err))
+  }, [formData.lat])
 
   // console.log("userDataBefore", userDataAfterUpdate);
 
@@ -200,6 +189,8 @@ const EditProfile = () => {
               }
             />
             {errorMessage.errorCity && <p>{errorMessage.errorCity}</p>}
+            <button onClick={getLocation}> Update city automatically</button>
+
           </div>
         ) : (
           <button> Update city automatically</button>
