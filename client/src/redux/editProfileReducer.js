@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+
     status: "loading",
     userDataAfterUpdate: []
 };
@@ -13,12 +14,14 @@ export const editProfile = createAsyncThunk('editProfile/isEdited', async (paylo
     //console.log(data)
 });
 
+
 export const getEditedProfileData = createAsyncThunk('editedProdile/isUpdated', async (payload) => {
     const data = await axios.post('http://localhost:5000/api/profile', payload);
     return data
 })
 
 const editProfileReducer = createSlice({
+
     name: "editProfile",
     initialState,
     extraReducers: {
@@ -46,9 +49,7 @@ const editProfileReducer = createSlice({
             state.status = "rejected";
         },
     }
+
 });
 
-export const {
-
-} = editProfileReducer.actions
-export default editProfileReducer.reducer
+export default editProfileReducer.reducer;

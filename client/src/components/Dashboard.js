@@ -6,24 +6,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders } from "../redux/orderReducer";
 const Dashboard = (props) => {
   const orderData = useSelector((state) => state.orderReducer.orderData);
+  const dataChanged = useSelector((state) => state.orderReducer.dataChanged);
 
   const id = useSelector((state) => state.authR.userData._id);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchOrders({ type: props.type, id }));
-  }, []);
+  }, [dataChanged]);
   return (
     <div>
       <Navbar button1="Edit profile" button2="Logout" />
       <div>
         {orderData.map((el) => (
           <Reservation
-            key={el.id}
-            // orderDate={el.orderDate}
-            // productsPurchased={el.productsPurchased}
-            // totalPrice={el.totalPrice}
-            // status={el.status}
-            // id={el._id}
+            key={el.userData._id}
+            orderDate={el.userData.orderDate}
+            productsPurchased={el.userData.productsPurchased}
+            totalPrice={el.userData.totalPrice}
+            id={el.userData._id}
+            targetData={el.targetData}
           />
         ))}
       </div>
