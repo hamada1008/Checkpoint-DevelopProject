@@ -11,15 +11,15 @@ const NannyProfile = (match) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.authR.userData);
   const handleOrder = () => {
-    const nanny_id = match.match.params.nanny_id;
+    // const nanny_id = match.match.params.nanny_id;
     // CALENDAR API for date
     dispatch(
       createOrder({
         parent_id: userData._id,
-        nanny_id,
+        nanny_id: "6144aa59b70fb0358f054aac",
         orderDate: new Date(),
         productsPurchased: ["pucifier", "lollipop"],
-        totalPrice: 200,
+        totalPrice: 2001,
       })
     );
 

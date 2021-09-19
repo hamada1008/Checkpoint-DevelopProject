@@ -56,7 +56,6 @@ router.post("/order/fetch", async (req, res) => {
         const query = await nanny
           .findById(allData[i].nanny_id, { fullName: 1, city: 1 })
           .exec();
-        allData[i].totalPrice = 20;
         allData[i] = { userData: allData[i], targetData: query };
       }
       res.status(200).json(allData);

@@ -17,7 +17,7 @@ const Reservation = (props) => {
         <li>Nanny's name : {props.targetData.fullName}</li>
         <li>Nanny's city : {props.targetData.city}</li>
         <li>
-          purshasedProducts :{" "}
+          purshasedProducts :
           {props.productsPurchased.map((el) => (
             <p key={Math.random()}>{el}</p>
           ))}

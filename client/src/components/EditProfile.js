@@ -5,13 +5,16 @@ import { editProfile, getEditedProfileData } from "../redux/editProfileReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditProfile = () => {
+  const userDataAfterUpdate = useSelector(
+    (state) => state.editProfileReducer.userDataAfterUpdate
+  );
+  const isLoading = useSelector((state) => state.editProfileReducer.status);
 
   const history = useHistory();
   //   const type = user.type;
   const type = "parent";
-  const { userDataAfterUpdate } = useSelector(state => state.editProfileReducer);
 
-  const [formData, setFormData] = useState('');
+  const [formData, setFormData] = useState({});
   //   {
   //   fullName: '',
   //   phone: '',
@@ -26,13 +29,13 @@ const EditProfile = () => {
   // );
 
   const [errorMessage, setErrorMessage] = useState({
-    errorfullName: '',
-    errorPhone: '',
-    errorRating: '',
-    errorAge: '',
-    errorPrice: '',
-    errorCity: ''
-  })
+    errorfullName: "",
+    errorPhone: "",
+    errorRating: "",
+    errorAge: "",
+    errorPrice: "",
+    errorCity: "",
+  });
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -49,35 +52,46 @@ const EditProfile = () => {
       "Longitude: " +
       position.coords.longitude;
     history.push("/parent/search/results");
-  };
-  const userData = useSelector(state => state.authR.userData);
-  const dispatch = useDispatch()
+  }
+  const userData = useSelector((state) => state.authR.userData);
+  const dispatch = useDispatch();
   const handleSave = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!formData.fullName) {
-      setErrorMessage({ errorfullName: 'Please enter a valide Name' })
+      setErrorMessage({ errorfullName: "Please enter a valide Name" });
     } else if (!formData.phone) {
-      setErrorMessage({ errorPhone: 'Please enter a valide Phone Number' })
-    } else if (!formData.rating || (formData.rating < 0 && formData.Rating > 5)) {
-      setErrorMessage({ errorRating: 'Rating must be between 0 and 5' })
+      setErrorMessage({ errorPhone: "Please enter a valide Phone Number" });
+    } else if (
+      !formData.rating ||
+      (formData.rating < 0 && formData.Rating > 5)
+    ) {
+      setErrorMessage({ errorRating: "Rating must be between 0 and 5" });
     } else if (!Number(formData.age)) {
-      setErrorMessage({ errorAge: 'Please enter a valid age' })
-    } else if (!formData.priceMin || formData.priceMin < 0 && formData.priceMin > formData.priceMax) {
-      setErrorMessage({ errorPrice: 'please entre a valid Price' })
-    }
-    else {
-
-      dispatch(editProfile({ id: userData._id, type: userData.type, formData }));
-      history.push(`/${type}/dashboard`)
+      setErrorMessage({ errorAge: "Please enter a valid age" });
+    } else if (
+      !formData.priceMin ||
+      (formData.priceMin < 0 && formData.priceMin > formData.priceMax)
+    ) {
+      setErrorMessage({ errorPrice: "please entre a valid Price" });
+    } else {
+      dispatch(
+        editProfile({ id: userData._id, type: userData.type, formData })
+      );
+      history.push(`/${type}/dashboard`);
     }
   };
-  console.log('userDataBefore', userDataAfterUpdate)
+  // const [dataLoaded, setDataLoaded] = useState(false);
   useEffect(() => {
-    test = !test
-    dispatch(getEditedProfileData({ id: userData._id, type: userData.type }))
-    setFormData(userDataAfterUpdate)
-  }, [!test])
-  console.log('userDataAfter', userDataAfterUpdate)
+    dispatch(getEditedProfileData({ id: userData._id, type: userData.type }));
+  }, []);
+  useEffect(() => {
+    setFormData(userDataAfterUpdate);
+  }, [userDataAfterUpdate]);
+
+  // console.log("userDataBefore", userDataAfterUpdate);
+
+  // console.log("userDataAfter", userDataAfterUpdate);
+
   return (
     <div>
       <Navbar button1="Edit profile" button2="Logout" />
@@ -88,7 +102,9 @@ const EditProfile = () => {
           type="text"
           // value={formData.fullName}
           value={formData.fullName}
-          onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, fullName: e.target.value })
+          }
           placeholder={formData.fullName}
         />
         {errorMessage.errorfullName && <p>{errorMessage.errorfullName}</p>}
@@ -97,7 +113,8 @@ const EditProfile = () => {
         <input
           type="text"
           value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+        />
         {errorMessage.errorPhone && <p>{errorMessage.errorPhone}</p>}
         {type === "parent" && <p>defaultSearchSettings</p>}
         <br />
@@ -108,9 +125,11 @@ const EditProfile = () => {
               type="text"
               placeholder="Minimum Rating"
               value={formData.rating}
-              onChange={(e) => setFormData({ ...formData, rating: e.target.value })} />
+              onChange={(e) =>
+                setFormData({ ...formData, rating: e.target.value })
+              }
+            />
             {errorMessage.errorRating && <p>{errorMessage.errorRating}</p>}
-
           </div>
         )}
         <br />
@@ -119,7 +138,8 @@ const EditProfile = () => {
           type="text"
           placeholder="age"
           value={formData.age}
-          onChange={(e) => setFormData({ ...formData, age: e.target.value })} />
+          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+        />
         {errorMessage.errorAge && <p>{errorMessage.errorAge}</p>}
 
         <div>
@@ -130,21 +150,29 @@ const EditProfile = () => {
                 type="text"
                 placeholder="price min"
                 value={formData.priceMin}
-                onChange={(e) => setFormData({ ...formData, priceMin: e.target.value })} />
+                onChange={(e) =>
+                  setFormData({ ...formData, priceMin: e.target.value })
+                }
+              />
               <input
                 type="text"
                 placeholder="price max"
                 value={formData.priceMax}
-                onChange={(e) => setFormData({ ...formData, priceMax: e.target.value })} />
+                onChange={(e) =>
+                  setFormData({ ...formData, priceMax: e.target.value })
+                }
+              />
               {errorMessage.errorPrice && <p>{errorMessage.errorPrice}</p>}
-
             </div>
           ) : (
             <input
               type="text"
               placeholder="price"
               value={formData.nannyPrice}
-              onChange={(e) => setFormData({ ...formData, nannyPrice: e.target.value })} />
+              onChange={(e) =>
+                setFormData({ ...formData, nannyPrice: e.target.value })
+              }
+            />
           )}
         </div>
         {type === "nanny" && (
@@ -154,7 +182,10 @@ const EditProfile = () => {
               type="text"
               placeholder="profile picture link"
               value={formData.profilePicture}
-              onChange={(e) => setFormData({ ...formData, profilePicture: e.target.value })} />
+              onChange={(e) =>
+                setFormData({ ...formData, profilePicture: e.target.value })
+              }
+            />
           </div>
         )}
         {type === "parent" ? (
@@ -164,19 +195,19 @@ const EditProfile = () => {
               type="text"
               placeholder="city"
               value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
+            />
             {errorMessage.errorCity && <p>{errorMessage.errorCity}</p>}
-
           </div>
-
         ) : (
           <button> Update city automatically</button>
         )}
-        <button onClick={handleSave} >Save Changes</button>
+        <button onClick={handleSave}>Save Changes</button>
       </form>
     </div>
   );
-
 };
 
 export default EditProfile;
