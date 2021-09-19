@@ -7,12 +7,25 @@ const router = express.Router();
 
 router.patch("/profile", (req, res) => {
   const type = req.body.type === 'parent' ? parent : nanny;
-  type.findByIdAndUpdate(req.body.id, { $set: req.body.formData }, (err, data) =>
+  const result = type.findByIdAndUpdate(req.body.id, { $set: req.body.formData }, (err, data) => {
     err
       ? res.status(400).send("failed to Update settings")
       : res.status(200).send(data)
+    //console.log(data)
+  }
   );
+
+  // userDataAfterUpdate = result._update.$set;
+  // const tokenAfterUpdate = jwt.sign(userDataAfterUpdate, process.env.ENCRYPTION_KEY);
+  // res.send(tokenAfterUpdate)
 });
+router.post('/profile', (req, res) => {
+  const type = req.body.type === 'parent' ? parent : nanny;
+  type.findById(req.body.id, (err, foundItem) => {
+    res.send(foundItem)
+  })
+
+})
 
 //Nanny Settings
 
