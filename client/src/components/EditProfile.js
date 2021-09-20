@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import Navbar from "./Navbar";
 import { editProfile, getEditedProfileData } from "../redux/editProfileReducer";
 import { useDispatch, useSelector } from "react-redux";
+import FileBase from "react-file-base64"
 import axios from "axios"
 
 const EditProfile = () => {
@@ -18,6 +19,11 @@ const EditProfile = () => {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState({
   });
+  function showPosition(position) {
+
+    setFormData({ ...formData, lng: position.coords.longitude, lat: position.coords.latitude })
+
+  };
 
   function getLocation(e) {
     e.preventDefault()
@@ -28,10 +34,6 @@ const EditProfile = () => {
     }
   }
 
-  function showPosition(position) {
-    setFormData({ ...formData, lng: position.coords.longitude, lat: position.coords.latitude })
-
-  };
 
 
   const handleSave = (e) => {
@@ -41,14 +43,12 @@ const EditProfile = () => {
     } else if (!formData.phone) {
       setErrorMessage({ errorPhone: "Please enter a valide Phone Number" });
     } else if (
-      !formData.rating ||
       (formData.rating < 0 && formData.Rating > 5)
     ) {
       setErrorMessage({ errorRating: "Rating must be between 0 and 5" });
     } else if (!Number(formData.age)) {
       setErrorMessage({ errorAge: "Please enter a valid age" });
     } else if (
-      !formData.priceMin ||
       (formData.priceMin < 0 && formData.priceMin > formData.priceMax)
     ) {
       setErrorMessage({ errorPrice: "please entre a valid Price" });
@@ -60,26 +60,30 @@ const EditProfile = () => {
     }
   };
   // const [dataLoaded, setDataLoaded] = useState(false);
-  useEffect(() => {
-    dispatch(getEditedProfileData({ id: userData._id, type: userData.type }));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getEditedProfileData({ id: userData._id, type: userData.type }));
+  // }, []);
   useEffect(() => {
     setFormData(userDataAfterUpdate);
   }, [userDataAfterUpdate]);
   useEffect(() => {
-    console.log(formData)
     formData.lng && axios.get(`https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData.lat}&lon=${formData.lng}&format=json`)
-      .then(data => {
-
-        setFormData({ ...formData, city: data.data.display_name })
+      .then(result => {
+        setFormData({ ...formData, city: result.data.address.city || result.data.address.town || result.data.display_name })
       }
       )
       .catch(err => console.log(err))
-  }, [formData.lat])
+  }, [formData?.lat])
 
-  // console.log("userDataBefore", userDataAfterUpdate);
+  const handleCityChange = (e) => {
+    if (e.target.value !== "selectCity") {
+      const { lng, lat, ...rest } = formData
+      setFormData(rest)
 
-  // console.log("userDataAfter", userDataAfterUpdate);
+    }
+  }
+
+
 
   return (
     <div>
@@ -156,10 +160,10 @@ const EditProfile = () => {
           ) : (
             <input
               type="text"
-              placeholder="price"
-              value={formData.nannyPrice}
+              placeholder="Your Pricing"
+              value={formData.pricing}
               onChange={(e) =>
-                setFormData({ ...formData, nannyPrice: e.target.value })
+                setFormData({ ...formData, pricing: e.target.value })
               }
             />
           )}
@@ -167,37 +171,48 @@ const EditProfile = () => {
         {type === "nanny" && (
           <div>
             <label>profilePicture</label>
-            <input
-              type="text"
-              placeholder="profile picture link"
-              value={formData.profilePicture}
-              onChange={(e) =>
-                setFormData({ ...formData, profilePicture: e.target.value })
-              }
+
+            <FileBase
+              type="file"
+              multiple={false}
+              onDone={({ base64 }) => setFormData({ ...formData, image: base64 })}
             />
           </div>
         )}
-        {type === "parent" ? (
-          <div>
-            <label>City</label>
+        <div>
+          <label>City</label>
+
+
+
+
+          {/*  */}
+          {type === "parent" ?
+            <select name="cityDropdown" onChange={handleCityChange}>
+              <option value="selectCity">Select a City</option>
+              formData.city&&  <option value={formData.city}>Your current city is: <strong>{formData.city}</strong></option>
+              <option value="nabeul">Nabeul</option>
+              <option value="beni khiar" >Béni Khiar</option>
+              <option value="Korba">Korba</option>
+              <option value="Maamoura">Maamoura</option>
+              <option value="Dar Chaaban">Dar Chaaban</option>
+
+
+            </select> :
             <input
               type="text"
               placeholder="city"
               value={formData.city}
-              onChange={(e) =>
-                setFormData({ ...formData, city: e.target.value })
-              }
-            />
-            {errorMessage.errorCity && <p>{errorMessage.errorCity}</p>}
-            <button onClick={getLocation}> Update city automatically</button>
+              disabled={true}
+            />}
 
-          </div>
-        ) : (
-          <button> Update city automatically</button>
-        )}
+          {errorMessage.errorCity && <p>{errorMessage.errorCity}</p>}
+          <button onClick={getLocation}> Update city automatically</button>
+
+        </div>
+
         <button onClick={handleSave}>Save Changes</button>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };
 
