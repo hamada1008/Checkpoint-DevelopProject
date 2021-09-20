@@ -19,7 +19,7 @@ const nannySchema = new mongoose.Schema({
   },
 
   fullName: String,
-  phoneNumber: {
+  phone: {
     type: String,
     // required: true
   },
@@ -37,7 +37,7 @@ const nannySchema = new mongoose.Schema({
     type: Number,
     //required
   },
-  profilePicture: String,
+  image: String,
   rating: Number,
   age: {
     type: Number,

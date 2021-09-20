@@ -11,7 +11,6 @@ router.patch("/profile", (req, res) => {
     err
       ? res.status(400).send("failed to Update settings")
       : res.status(200).send(data)
-    //console.log(data)
   }
   );
 

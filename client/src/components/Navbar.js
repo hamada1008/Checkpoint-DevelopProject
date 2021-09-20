@@ -9,6 +9,7 @@ import {
 import { useHistory } from "react-router";
 import { logoutAuth } from "../redux/authReducer";
 import { useDispatch } from "react-redux";
+import { profileLogout } from "../redux/editProfileReducer";
 
 const Navbar = (props) => {
   const history = useHistory();
@@ -19,6 +20,7 @@ const Navbar = (props) => {
   const handleSecondClick = () => {
     if (props.button2 === "Logout") {
       dispatch(logoutAuth());
+      // dispatch(profileLogout());
       history.push("/");
     }
   };
