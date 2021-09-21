@@ -69,7 +69,8 @@ const EditProfile = () => {
   useEffect(() => {
     formData.lng && axios.get(`https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData.lat}&lon=${formData.lng}&format=json`)
       .then(result => {
-        setFormData({ ...formData, city: result.data.address.city || result.data.address.town || result.data.display_name })
+        setFormData({ ...formData, city: result.data.address.city || result.data.address.town || result.data.address.state || result.data.display_name });
+        console.log(result)
       }
       )
       .catch(err => console.log(err))
@@ -77,9 +78,10 @@ const EditProfile = () => {
 
   const handleCityChange = (e) => {
     if (e.target.value !== "selectCity") {
+      console.log(e.target.value)
       const { lng, lat, ...rest } = formData
-      setFormData(rest)
-
+      console.log(rest)
+      setFormData({ ...rest, city: e.target.value })
     }
   }
 
@@ -182,18 +184,15 @@ const EditProfile = () => {
         <div>
           <label>City</label>
 
-
-
-
           {/*  */}
           {type === "parent" ?
             <select name="cityDropdown" onChange={handleCityChange}>
               <option value="selectCity">Select a City</option>
-              formData.city&&  <option value={formData.city}>Your current city is: <strong>{formData.city}</strong></option>
+              <option value={formData.city}>{formData.city}</option>
               <option value="nabeul">Nabeul</option>
               <option value="beni khiar" >Béni Khiar</option>
               <option value="Korba">Korba</option>
-              <option value="Maamoura">Maamoura</option>
+              <option value="Tunis">Tunis</option>
               <option value="Dar Chaaban">Dar Chaaban</option>
 
 
