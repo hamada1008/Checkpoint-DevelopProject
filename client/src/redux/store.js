@@ -3,8 +3,10 @@ import authReducer from "./authReducer";
 
 import orderReducer from "./orderReducer";
 import editProfileReducer from "./editProfileReducer";
+import searchReducer from "./searchReducer";
+
 const store = configureStore({
-    reducer: { authR: authReducer, editProfileReducer, orderReducer }, middleware: getDefaultMiddleware({
+    reducer: { authR: authReducer, editProfileReducer, orderReducer, searchReducer }, middleware: getDefaultMiddleware({
         serializableCheck: false
     })
 });

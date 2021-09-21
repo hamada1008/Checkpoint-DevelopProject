@@ -3,34 +3,26 @@ import nanny from "../models/nanny.js";
 import parent from "../models/parent.js";
 const router = express.Router();
 
-//auto complete the search frields based on parent preferences
 
-router.get("/search_fields/:id", (req, res) => {
-  parent.findById(req.params.id, (err, data) =>
-    err
-      ? res.status(400).send("failed to Update settings")
-      : res.status(200).send(data.defaultSearchSettings)
-  );
-});
 
 //Searching nannies
 router.post("/search", (req, res) => {
-  const { region, city, rating, pricing, age } = req.body;
+  const { region, city, rating, priceMin, priceMax, age } = req.body;
 
   nanny.find(
     {
       $and: [
-        { $and: [{ region: region }, { $ne: null || undefined }] },
+        // { $and: [{ region: region }, { $ne: null || undefined }] },
         city ? { city: city } : {},
-        { rating: { $gte: rating } },
-        pricing[0] === 0 && pricing[1] === 0
+        // { rating: { $gte: rating } },
+        priceMin === 0 && priceMax === 0
           ? {}
-          : pricing[1] === 0
-          ? { pricing: { $gte: pricing[0] } }
-          : {
+          : priceMax === 0
+            ? { pricing: { $gte: priceMin } }
+            : {
               $and: [
-                { pricing: { $gte: pricing[0] } },
-                { pricing: { $lte: pricing[1] } },
+                { pricing: { $gte: priceMin } },
+                { pricing: { $lte: priceMax } },
               ],
             },
         age === 0 ? {} : { age: { $gte: age } },

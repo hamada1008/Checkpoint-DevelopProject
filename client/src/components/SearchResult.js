@@ -6,16 +6,26 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
-import testMap from "../Data/testMap";
-
+import { useSelector } from "react-redux";
+import cityCenters from "../Data/cityCenter";
 const SearchResult = () => {
+
   const mapContainerStyle = {
     height: "100vh",
     width: "100vw",
   };
 
+  const searchResultData = useSelector(state => state.searchReducer.searchResultData)
   const [selectedNanny, setSelectedNanny] = useState(null);
+  var defaultCenterState = []
   const [center, setCenter] = useState({ lat: 36.457526, lng: 10.778335 });
+
+  useEffect(() => {
+    defaultCenterState = cityCenters.filter(el => el.name === searchResultData[0]?.city)
+    console.log("dc", defaultCenterState)
+    setCenter({ lat: defaultCenterState[0]?.lat, lng: defaultCenterState[0]?.lng })
+  }, [searchResultData])
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -33,25 +43,25 @@ const SearchResult = () => {
   }, []);
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "loading maps";
-
+  console.log(searchResultData)
   return (
     <GoogleMap
       id="map"
       mapContainerStyle={mapContainerStyle}
-      zoom={15}
+      zoom={11}
       center={center}
       onClick={() => setSelectedNanny(null)}
     >
-      {testMap.map((el) => (
+      {searchResultData.map((el) => (
         <Marker
-          key={el.id}
+          key={el._id}
           position={{
-            lng: el.lat,
-            lat: el.lon,
+            lng: el.lng,
+            lat: el.lat,
           }}
           onClick={() => {
             setSelectedNanny(el);
-            setCenter({ lng: el.lat, lat: el.lon });
+            setCenter({ lng: el.lng, lat: el.lat });
           }}
         />
       ))}
@@ -62,14 +72,14 @@ const SearchResult = () => {
             setSelectedNanny(null);
           }}
           position={{
-            lat: selectedNanny.lon + 0.0015,
-            lng: selectedNanny.lat,
+            lat: selectedNanny.lat + 0.0015,
+            lng: selectedNanny.lng,
           }}
         >
           <div>
-            <h3>{selectedNanny.name}</h3>
-            <span>${selectedNanny.price}</span>
-            <Link to={`/parent/search/results/profile/${selectedNanny.id}`}>
+            <h3>{selectedNanny.fullName}</h3>
+            <span>${selectedNanny.pricing}</span>
+            <Link to={`/parent/search/results/profile/${selectedNanny._id}`}>
               <p> See Profile</p>
             </Link>
           </div>
