@@ -26,7 +26,7 @@ const Navbar = (props) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="d">
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
         <Typography variant="h6">Our Best Nanny</Typography>
