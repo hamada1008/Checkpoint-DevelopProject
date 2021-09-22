@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const CartItem = (props) => {
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(props.qty);
   const handlechange = (e) => {
     e.preventDefault()
     setQty(e.target.value);
@@ -15,7 +15,7 @@ const CartItem = (props) => {
   useEffect(() => {
     let newShoppingItems = props.currentShoppingItems.map((el) => {
       if (el.id === props.id) {
-        return { ...el, totalPrice: (el.price * qty) }
+        return { ...el, totalPrice: (el.price * qty), qty: qty }
       }
       else {
         return el

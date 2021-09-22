@@ -45,6 +45,8 @@ const orderReducer = createSlice({
     },
     [createOrder.fulfilled]: (state) => {
       state.status = "succeeded";
+      state.dataChanged = !state.dataChanged;
+
     },
     [createOrder.rejected]: (state) => {
       state.status = "rejected";
