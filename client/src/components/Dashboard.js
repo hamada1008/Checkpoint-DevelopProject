@@ -4,11 +4,10 @@ import ServiceCard from "./ServiceCard";
 import Reservation from "./Reservation";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders } from "../redux/orderReducer";
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 import { editProfile } from "../redux/editProfileReducer";
 import { getEditedProfileData } from "../redux/editProfileReducer";
-
-
+import LoadingOrders from "../loading Components/LoadingOrders";
 const Dashboard = (props) => {
   const orderData = useSelector((state) => state.orderReducer.orderData);
   const dataChanged = useSelector((state) => state.orderReducer.dataChanged);
@@ -17,6 +16,7 @@ const Dashboard = (props) => {
   );
   const id = useSelector((state) => state.authR.userData._id);
   const userData = useSelector((state) => state.authR.userData);
+  const orderLoading = useSelector((state) => state.orderReducer.status);
   const [checked, setChecked] = useState(userDataAfterUpdate?.availability);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -27,31 +27,34 @@ const Dashboard = (props) => {
   }, []);
 
   useEffect(() => {
-    setChecked(userDataAfterUpdate?.availability)
-  }, [userDataAfterUpdate])
+    setChecked(userDataAfterUpdate?.availability);
+  }, [userDataAfterUpdate]);
   const handleSwitcherChange = (e) => {
-
     setChecked(e.target.checked);
-    const formData = { ...userDataAfterUpdate, availability: e.target.checked }
-    dispatch(editProfile({ id: id, type: userData.type, formData }))
+    const formData = { ...userDataAfterUpdate, availability: e.target.checked };
+    dispatch(editProfile({ id: id, type: userData.type, formData }));
   };
   return (
     <div>
       <Navbar button1="Edit profile" button2="Logout" />
-      <div>
-        {orderData.map((el) => (
-          <Reservation
-            key={el.userData._id}
-            orderDate={el.userData.orderDate}
-            productsPurchased={el.userData.productsPurchased}
-            totalPrice={el.userData.totalPrice}
-            id={el.userData._id}
-            targetData={el.targetData}
-          />
-        ))}
+      <div className="orderContainer">
+        {orderLoading === "loading" ? (
+          <LoadingOrders />
+        ) : (
+          orderData.map((el) => (
+            <Reservation
+              key={el.userData._id}
+              orderDate={el.userData.orderDate}
+              productsPurchased={el.userData.productsPurchased}
+              totalPrice={el.userData.totalPrice}
+              id={el.userData._id}
+              targetData={el.targetData}
+            />
+          ))
+        )}
       </div>
       {props.type === "parent" ? (
-        <div>
+        <div className="container">
           <ServiceCard nannyType="Nanny In" />
           <ServiceCard nannyType="Nanny Out" />
         </div>
@@ -61,10 +64,11 @@ const Dashboard = (props) => {
           <Switch
             checked={checked}
             onChange={handleSwitcherChange}
-            inputProps={{ 'aria-label': 'controlled' }}
+            inputProps={{ "aria-label": "controlled" }}
           />
           <img src={userDataAfterUpdate?.image} alt="blabla" />
-        </div>)}
+        </div>
+      )}
     </div>
   );
 };

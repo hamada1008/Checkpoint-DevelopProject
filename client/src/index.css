@@ -15,3 +15,13 @@ body {
 .navbar {
   background-color: #38a3a5;
 }
+.container {
+  margin-top: 30px;
+  margin-bottom: 5%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-content: "space-between";
+  width: 100vw;
+  height: 50vh;
+}
