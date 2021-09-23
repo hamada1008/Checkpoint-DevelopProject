@@ -4,8 +4,23 @@ import { loginAuth, registerAuth } from "../redux/authReducer";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import validator from 'email-validator';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles({
+  root: {
+    background: '#C8E6C9',
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+  },
+});
 
 function Form() {
+  const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -42,10 +57,32 @@ function Form() {
       setErrorMessage({ errorLogin: 'Verify your data' })
 
     }
-  }
+  };
+
   return (
     <div>
-      <form className="form">
+      {/* <form className="form"> */}
+      <Box
+        component="form"
+        sx={{
+          '& > :not(style)': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+
+        <TextField
+          className={classes.root}
+          id="filled-basic"
+          label="username"
+          variant="filled"
+          InputProps={{
+            className: classes.input
+          }}
+          onChange={(e) =>
+            setFormData({ ...formData, username: e.target.value })
+          } />
+
         <input
           value={formData.username}
           type="text"
@@ -106,7 +143,8 @@ function Form() {
           {userIsRegistered ? "Register" : "Login"}
         </button>
         {/* </Link> */}
-      </form>
+        {/* </form> */}
+      </Box>
       {errorMessage.errorLogin && <label>{errorMessage.errorLogin}</label>}
       <br />
       <button onClick={() => setUserIsRegistered(!userIsRegistered)}>
