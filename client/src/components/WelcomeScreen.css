@@ -39,3 +39,12 @@
   height: 50%;
   width: 50%;
 }
+
+.checkbox_styling {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 30vw;
+  /* border: 1px solid black; */
+  margin: 0 auto;
+}

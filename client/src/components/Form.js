@@ -7,15 +7,25 @@ import validator from 'email-validator';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const useStyles = makeStyles({
-  root: {
-    background: '#C8E6C9',
+  input: {
     borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
+    boxShadow: '0px 10px 10px 5px #65b363',
+    height: 55,
+    padding: '0 0',
+    "& .MuiInputLabel-outlined": {
+      color: "black" // or black
+    }
+  },
+  "& #outlined-basic-label": {
+    color: "black",
+    zIndex: 2,
+    marginTop: -12,
+
   },
 });
 
@@ -28,7 +38,7 @@ function Form() {
     password: "",
     email: "",
     fullName: "",
-    type: "",
+    type: "parent",
   });
   const [userIsRegistered, setUserIsRegistered] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
@@ -59,9 +69,19 @@ function Form() {
     }
   };
 
+  const [checked, setChecked] = useState(true);
+  const handleParentChange = (e) => {
+    setChecked(!checked);
+    setFormData({ ...formData, type: e.target.name })
+
+  }
+  const handleNannyChange = (e) => {
+    setChecked(!checked);
+    setFormData({ ...formData, type: e.target.name })
+  }
+
   return (
     <div>
-      {/* <form className="form"> */}
       <Box
         component="form"
         sx={{
@@ -72,78 +92,63 @@ function Form() {
       >
 
         <TextField
-          className={classes.root}
-          id="filled-basic"
+          className={classes.input}
+          id="outlined-basic"
           label="username"
-          variant="filled"
-          InputProps={{
-            className: classes.input
-          }}
+          variant="outlined"
           onChange={(e) =>
             setFormData({ ...formData, username: e.target.value })
           } />
 
-        <input
-          value={formData.username}
-          type="text"
-          placeholder="Username"
-          onChange={(e) =>
-            setFormData({ ...formData, username: e.target.value })
-          }
-        />
         {errorMessage.errorUsername && <label>{errorMessage.errorUsername}</label>}
-        <br />
-        {userIsRegistered && (
-          <div>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
-            {errorMessage.errorEmail && <label>{errorMessage.errorEmail}</label>}
-            <br />
-            <input
-              value={formData.fullName}
-              type="text"
-              placeholder="Full Name"
-              onChange={(e) =>
-                setFormData({ ...formData, fullName: e.target.value })
-              }
-            />
-          </div>
-        )}<br />
-        <input
-          value={formData.password}
-          type="password"
-          placeholder="Password"
+
+
+
+        <TextField
+          className={classes.input}
+          id="outlined-basic"
+          label="password"
+          variant="outlined"
           onChange={(e) =>
             setFormData({ ...formData, password: e.target.value })
-          }
-        />
+          } />
+        {errorMessage.errorEmail && <label>{errorMessage.errorEmail}</label>}
+        <br />
+
+        {userIsRegistered && (<TextField
+          className={classes.input}
+          id="outlined-basic"
+          label="full name"
+          variant="outlined"
+          onChange={(e) =>
+            setFormData({ ...formData, fullName: e.target.value })
+          } />
+
+        )}
+        {userIsRegistered && (<TextField
+          className={classes.input}
+          id="outlined-basic"
+          label="email"
+          variant="outlined"
+          onChange={(e) =>
+            setFormData({ ...formData, email: e.target.value })
+          } />)}
         {errorMessage.errorPassword && <label>{errorMessage.errorPassword}</label>}
 
         <br />
-        {/* <label>You are ?</label>
-        <label htmlFor="Parent">Parent</label>
-        <input type="checkbox" name="Parent" />
-        <label htmlFor="Nanny">Nanny</label>
-        <input type="checkbox" name="Nanny" /> */}
-        <input
-          type="text"
-          onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-          value={formData.type}
-          placeholder="type"
-        />
+
+        <FormGroup>
+          <div className="checkbox_styling">
+            <FormControlLabel control={<Checkbox name="parent" onChange={handleParentChange} checked={checked} />} label="Parent" />
+            <FormControlLabel control={<Checkbox name="nanny" onChange={handleNannyChange} checked={!checked} />} label="Nanny" />
+          </div>
+        </FormGroup>
 
         <br />
-        {/* <Link to="/parent/dashboard"> */}
+
         <button type="submit" onClick={handleSubmit}>
           {userIsRegistered ? "Register" : "Login"}
         </button>
-        {/* </Link> */}
-        {/* </form> */}
       </Box>
       {errorMessage.errorLogin && <label>{errorMessage.errorLogin}</label>}
       <br />
