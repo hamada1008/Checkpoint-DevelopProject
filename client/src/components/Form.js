@@ -10,6 +10,7 @@ import { makeStyles } from '@mui/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Button from '@mui/material/Button';
 
 const useStyles = makeStyles({
   input: {
@@ -17,17 +18,28 @@ const useStyles = makeStyles({
     boxShadow: '0px 10px 10px 5px #65b363',
     height: 55,
     padding: '0 0',
-    "& .MuiInputLabel-outlined": {
-      color: "black" // or black
-    }
+    "&.MuiInputLabel-outlined": { color: "black" }, // or black
+    "& #outlined-basic-label": {
+      color: "black",
+      zIndex: 2,
+      marginTop: 3,
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'black',
+      },
+    },
   },
-  "& #outlined-basic-label": {
-    color: "black",
-    zIndex: 2,
-    marginTop: -12,
-
-  },
+  btn: {
+    backgroundColor: 'white',
+    color: 'black'
+  }
 });
+
+
 
 function Form() {
   const classes = useStyles();
@@ -81,7 +93,7 @@ function Form() {
   }
 
   return (
-    <div>
+    <div className="form_and_button_container">
       <Box
         component="form"
         sx={{
@@ -139,24 +151,28 @@ function Form() {
 
         <FormGroup>
           <div className="checkbox_styling">
-            <FormControlLabel control={<Checkbox name="parent" onChange={handleParentChange} checked={checked} />} label="Parent" />
-            <FormControlLabel control={<Checkbox name="nanny" onChange={handleNannyChange} checked={!checked} />} label="Nanny" />
+            <FormControlLabel
+              control={
+                <Checkbox name="parent" onChange={handleParentChange} checked={checked} sx={{ color: 'white', '&.Mui-checked': { color: 'white', } }} />
+              } label="Parent" />
+            <FormControlLabel control={<Checkbox name="nanny" onChange={handleNannyChange} checked={!checked} sx={{ color: 'white', '&.Mui-checked': { color: 'white', } }} />} label="Nanny" />
           </div>
         </FormGroup>
 
         <br />
 
-        <button type="submit" onClick={handleSubmit}>
+        <Button style={{ backgroundColor: 'white', color: 'black' }} type="submit" onClick={handleSubmit}>
           {userIsRegistered ? "Register" : "Login"}
-        </button>
+        </Button>
       </Box>
       {errorMessage.errorLogin && <label>{errorMessage.errorLogin}</label>}
       <br />
-      <button onClick={() => setUserIsRegistered(!userIsRegistered)}>
+      <p onClick={() => setUserIsRegistered(!userIsRegistered)} style={{ cursor: 'pointer', width: '35vw', textAlign: 'center' }}>
         {userIsRegistered
           ? "Already have an account?"
           : "New to our website? Create a new account"}
-      </button><br />
+      </p>
+      <br />
 
     </div>
   );

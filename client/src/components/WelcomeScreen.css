@@ -1,3 +1,8 @@
+* {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+}
+
 .Welcoming_and_image {
   display: flex;
   flex-direction: row;
@@ -7,25 +12,36 @@
 .Welcome_container {
   height: 80vh;
   margin: auto;
-  padding: 0%;
   display: grid;
   grid-template-rows: 30% 70%;
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  border: black 1px solid;
+  background-color: #77d374;
+}
+
+.Welcome_container::before {
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
 }
 
 .Welcome_text {
+  margin-top: 3%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .welcoming {
   letter-spacing: 3px;
   color: #3e4a3d;
   font-family: "Roboto", sans-serif;
+  font-weight: bold;
+}
+.description {
+  color: #3e4a3d;
+  font-weight: bold;
 }
 
 .form {
@@ -40,11 +56,19 @@
   width: 50%;
 }
 
+/* formStyling */
+
 .checkbox_styling {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   width: 30vw;
   /* border: 1px solid black; */
   margin: 0 auto;
+}
+
+.form_and_button_container {
+  display: grid;
+  grid-template-rows: auto;
+  text-align: center;
 }
