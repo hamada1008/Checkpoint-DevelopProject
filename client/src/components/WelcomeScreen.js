@@ -13,7 +13,7 @@ const welcomeScreen = () => {
           <div className="Welcome_text">
             <h1 className="welcoming">Welcome to My Best Nanny</h1>
             <p>
-              Where we find you the best people to take care of your dear children
+              My Best Nanny, aims to connect parents with babysitters and social and/or school assistants, qualified, competent and chosen according to several criteria.
             </p>
           </div>
           <div className="form">
