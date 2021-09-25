@@ -55,8 +55,8 @@ const Dashboard = (props) => {
       </div>
       {props.type === "parent" ? (
         <div className="container">
-          <ServiceCard nannyType="Nanny In" />
-          <ServiceCard nannyType="Nanny Out" />
+          <ServiceCard nannyType="NannyIn" />
+          <ServiceCard nannyType="NannyOut" />
         </div>
       ) : (
         <div>

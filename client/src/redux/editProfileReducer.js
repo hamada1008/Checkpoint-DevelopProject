@@ -20,7 +20,6 @@ export const editProfile = createAsyncThunk(
 export const getEditedProfileData = createAsyncThunk(
   "editedProdile/isUpdated",
   async (payload) => {
-
     const data = await axios.post("http://localhost:5000/api/profile", payload);
     return data;
   }
@@ -41,7 +40,6 @@ const editProfileReducer = createSlice({
       state.status = "succeeded";
     },
     [editProfile.rejected]: (state) => {
-
       state.status = "rejected";
     },
     [getEditedProfileData.pending]: (state) => {
@@ -53,7 +51,7 @@ const editProfileReducer = createSlice({
     },
     [getEditedProfileData.rejected]: (state) => {
       state.status = "rejected";
-      state.userDataAfterUpdate = initialState.userDataAfterUpdate
+      state.userDataAfterUpdate = initialState.userDataAfterUpdate;
     },
   },
 });

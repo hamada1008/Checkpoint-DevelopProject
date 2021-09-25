@@ -96,5 +96,17 @@
 }
 
 .deleteOrderButton:hover {
-  transform: scale(1.5);
+  animation: buttonHover 0.3s ease forwards;
+}
+@keyframes buttonHover {
+  to {
+    transform: scale(1.5);
+  }
+}
+
+@media screen and (max-width: 1090px) {
+  * {
+    font-size: 0.9rem;
+    overflow: hidden;
+  }
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Navbar from "./Navbar";
-import { editProfile, getEditedProfileData } from "../redux/editProfileReducer";
+import { editProfile } from "../redux/editProfileReducer";
 import { useDispatch, useSelector } from "react-redux";
-import FileBase from "react-file-base64"
-import axios from "axios"
-
+import FileBase from "react-file-base64";
+import axios from "axios";
+import feedingBottle from "../img/feeding bottle.png";
+import babyToy from "../img/babytoy.png";
 const EditProfile = () => {
   const dispatch = useDispatch();
 
@@ -13,20 +14,21 @@ const EditProfile = () => {
     (state) => state.editProfileReducer.userDataAfterUpdate
   );
   const userData = useSelector((state) => state.authR.userData);
-  const type = userData.type
+  const type = userData.type;
 
   const history = useHistory();
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState({
-  });
+  const [errorMessage, setErrorMessage] = useState({});
   function showPosition(position) {
-
-    setFormData({ ...formData, lng: position.coords.longitude, lat: position.coords.latitude })
-
-  };
+    setFormData({
+      ...formData,
+      lng: position.coords.longitude,
+      lat: position.coords.latitude,
+    });
+  }
 
   function getLocation(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
@@ -34,23 +36,17 @@ const EditProfile = () => {
     }
   }
 
-
-
   const handleSave = (e) => {
     e.preventDefault();
     if (!formData.fullName) {
       setErrorMessage({ errorfullName: "Please enter a valide Name" });
     } else if (!formData.phone) {
       setErrorMessage({ errorPhone: "Please enter a valide Phone Number" });
-    } else if (
-      (formData.rating < 0 && formData.Rating > 5)
-    ) {
+    } else if (formData.rating < 0 && formData.Rating > 5) {
       setErrorMessage({ errorRating: "Rating must be between 0 and 5" });
     } else if (!Number(formData.age)) {
       setErrorMessage({ errorAge: "Please enter a valid age" });
-    } else if (
-      (formData.priceMin < 0 && formData.priceMin > formData.priceMax)
-    ) {
+    } else if (formData.priceMin < 0 && formData.priceMin > formData.priceMax) {
       setErrorMessage({ errorPrice: "please entre a valid Price" });
     } else {
       dispatch(
@@ -67,56 +63,80 @@ const EditProfile = () => {
     setFormData(userDataAfterUpdate);
   }, [userDataAfterUpdate]);
   useEffect(() => {
-    formData.lng && axios.get(`https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData.lat}&lon=${formData.lng}&format=json`)
-      .then(result => {
-        setFormData({ ...formData, city: result.data.address.city || result.data.address.town || result.data.address.state || result.data.display_name });
-        console.log(result)
-      }
-      )
-      .catch(err => console.log(err))
-  }, [formData?.lat])
+    formData.lng &&
+      axios
+        .get(
+          `https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData.lat}&lon=${formData.lng}&format=json`
+        )
+        .then((result) => {
+          setFormData({
+            ...formData,
+            city:
+              result.data.address.city ||
+              result.data.address.town ||
+              result.data.address.state ||
+              result.data.display_name,
+          });
+        })
+        .catch((err) => console.log(err));
+  }, [formData?.lat]);
 
   const handleCityChange = (e) => {
     if (e.target.value !== "selectCity") {
-      console.log(e.target.value)
-      const { lng, lat, ...rest } = formData
-      console.log(rest)
-      setFormData({ ...rest, city: e.target.value })
+      console.log(e.target.value);
+      const { lng, lat, ...rest } = formData;
+      console.log(rest);
+      setFormData({ ...rest, city: e.target.value });
     }
-  }
-
-
+  };
 
   return (
     <div>
       <Navbar button1="Edit profile" button2="Logout" />
-
-      <form className="form">
-        <label>fullName</label>
-        <input
-          type="text"
-          // value={formData.fullName}
-          value={formData.fullName}
-          onChange={(e) =>
-            setFormData({ ...formData, fullName: e.target.value })
-          }
-          placeholder={formData.fullName}
-        />
-        {errorMessage.errorfullName && <p>{errorMessage.errorfullName}</p>}
-        <br />
-        <label>Phone Number</label>
-        <input
-          type="text"
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-        />
-        {errorMessage.errorPhone && <p>{errorMessage.errorPhone}</p>}
-        {type === "parent" && <p>defaultSearchSettings</p>}
-        <br />
+      <img className="decor1" src={babyToy} alt="babyToy" />
+      <img className="decor2" src={feedingBottle} alt="feedingBottle" />
+      <form className="formProfile">
+        <div className="input-containers">
+          <label className="fieldLabel">Full Name</label>
+          <input
+            className="fieldInput"
+            type="text"
+            // value={formData.fullName}
+            value={formData.fullName}
+            onChange={(e) =>
+              setFormData({ ...formData, fullName: e.target.value })
+            }
+            placeholder={formData.fullName}
+          />
+        </div>
+        {errorMessage.errorfullName && (
+          <p className="errorMessage">{errorMessage.errorfullName}</p>
+        )}
+        <div className="input-containers">
+          <label className="fieldLabel">Phone Number</label>
+          <input
+            className="fieldInput"
+            type="text"
+            value={formData.phone}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
+          />
+        </div>
+        {errorMessage.errorPhone && (
+          <p className="errorMessage">{errorMessage.errorPhone}</p>
+        )}
         {type === "parent" && (
-          <div>
-            <label>Rating {">"}</label>
+          <i style={{ margin: 10, fontWeight: "bold", color: "#C36839" }}>
+            defaultSearchSettings
+          </i>
+        )}
+
+        {type === "parent" && (
+          <div className="input-containers">
+            <label className="fieldLabel">Minimum Rating</label>
             <input
+              className="fieldInput fieldInputNumber"
               type="text"
               placeholder="Minimum Rating"
               value={formData.rating}
@@ -124,24 +144,31 @@ const EditProfile = () => {
                 setFormData({ ...formData, rating: e.target.value })
               }
             />
-            {errorMessage.errorRating && <p>{errorMessage.errorRating}</p>}
+            {errorMessage.errorRating && (
+              <p className="errorMessage">{errorMessage.errorRating}</p>
+            )}
           </div>
         )}
-        <br />
-        <label>Age</label>
-        <input
-          type="text"
-          placeholder="age"
-          value={formData.age}
-          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-        />
-        {errorMessage.errorAge && <p>{errorMessage.errorAge}</p>}
+        <div className="input-containers">
+          <label className="fieldLabel">Age</label>
+          <input
+            className="fieldInput fieldInputNumber"
+            type="text"
+            placeholder="age"
+            value={formData.age}
+            onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+          />
+        </div>
+        {errorMessage.errorAge && (
+          <p className="errorMessage">{errorMessage.errorAge}</p>
+        )}
 
-        <div>
-          <label>Price</label>
+        <div className="input-containers">
           {type === "parent" ? (
-            <div>
+            <div className="input-containers">
+              <label className="fieldLabel">Price Range</label>
               <input
+                className="fieldInput fieldInputNumber"
                 type="text"
                 placeholder="price min"
                 value={formData.priceMin}
@@ -150,6 +177,7 @@ const EditProfile = () => {
                 }
               />
               <input
+                className="fieldInput fieldInputNumber"
                 type="text"
                 placeholder="price max"
                 value={formData.priceMax}
@@ -157,61 +185,78 @@ const EditProfile = () => {
                   setFormData({ ...formData, priceMax: e.target.value })
                 }
               />
-              {errorMessage.errorPrice && <p>{errorMessage.errorPrice}</p>}
+              {errorMessage.errorPrice && (
+                <p className="errorMessage">{errorMessage.errorPrice}</p>
+              )}
             </div>
           ) : (
-            <input
-              type="text"
-              placeholder="Your Pricing"
-              value={formData.pricing}
-              onChange={(e) =>
-                setFormData({ ...formData, pricing: e.target.value })
-              }
-            />
+            <div className="input-containers">
+              <label className="fieldLabel">Pricing</label>
+              <input
+                className="fieldInput fieldInputNumber"
+                type="text"
+                placeholder="Your Pricing"
+                value={formData.pricing}
+                onChange={(e) =>
+                  setFormData({ ...formData, pricing: e.target.value })
+                }
+              />
+            </div>
           )}
         </div>
         {type === "nanny" && (
-          <div>
-            <label>profilePicture</label>
+          <div className="input-containers">
+            <label className="fieldLabel">profilePicture</label>
 
             <FileBase
               type="file"
               multiple={false}
-              onDone={({ base64 }) => setFormData({ ...formData, image: base64 })}
+              onDone={({ base64 }) =>
+                setFormData({ ...formData, image: base64 })
+              }
             />
           </div>
         )}
-        <div>
-          <label>City</label>
+        <div className="input-containers">
+          <label className="fieldLabel">City</label>
 
-          {/*  */}
-          {type === "parent" ?
-            <select name="cityDropdown" onChange={handleCityChange}>
+          {type === "parent" ? (
+            <select
+              className="cityOptions"
+              name="cityDropdown"
+              onChange={handleCityChange}
+            >
               <option value="selectCity">Select a City</option>
               <option value={formData.city}>{formData.city}</option>
               <option value="nabeul">Nabeul</option>
-              <option value="beni khiar" >Béni Khiar</option>
+              <option value="beni khiar">Béni Khiar</option>
               <option value="Korba">Korba</option>
               <option value="Tunis">Tunis</option>
               <option value="Dar Chaaban">Dar Chaaban</option>
-
-
-            </select> :
+            </select>
+          ) : (
             <input
+              className="fieldInput"
               type="text"
               placeholder="city"
               value={formData.city}
               disabled={true}
-            />}
+            />
+          )}
 
-          {errorMessage.errorCity && <p>{errorMessage.errorCity}</p>}
-          <button onClick={getLocation}> Update city automatically</button>
-
+          {errorMessage.errorCity && (
+            <p className="errorMessage">{errorMessage.errorCity}</p>
+          )}
+          <button className="locationBtn" onClick={getLocation}>
+            Update city
+          </button>
         </div>
 
-        <button onClick={handleSave}>Save Changes</button>
-      </form >
-    </div >
+        <button className="submitBtn" onClick={handleSave}>
+          Save Changes
+        </button>
+      </form>
+    </div>
   );
 };
 

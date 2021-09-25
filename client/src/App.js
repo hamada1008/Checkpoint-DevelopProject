@@ -37,7 +37,6 @@ function App() {
     ) : (
       <Route exact path="/">
         <WelcomeScreen />
-        {/* <Form /> */}
       </Route>
     );
   } else

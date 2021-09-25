@@ -1,30 +1,25 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Button,
-  FormHelperText,
-} from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Button } from "@material-ui/core";
 import { useHistory } from "react-router";
 import { logoutAuth } from "../redux/authReducer";
-import { useDispatch } from "react-redux";
-import { profileLogout } from "../redux/editProfileReducer";
+import { useDispatch, useSelector } from "react-redux";
+// import { profileLogout } from "../redux/editProfileReducer";
 import { makeStyles } from "@material-ui/core";
-import logo from "../img/logo.svg"
+import logo from "../img/logo.svg";
+import { Link } from "react-router-dom";
 
 const useStyle = makeStyles({
   navbar: {
-    display: 'Flex',
-    justifyContent: "space-between"
-  }
-})
+    display: "Flex",
+    justifyContent: "space-between",
+  },
+});
 
 const Navbar = (props) => {
   const classes = useStyle();
   const history = useHistory();
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.authR.userData);
   const handleFirstClick = () => {
     props.button1 === "Edit profile" && history.push("/profile");
   };
@@ -37,16 +32,33 @@ const Navbar = (props) => {
   };
 
   return (
-    <AppBar position="static" color="d" >
+    <AppBar position="static" color="d">
       <Toolbar className={classes.navbar}>
-        <div style={{ display: 'flex', flexDirection: "row", width: '25vw', justifyContent: 'space-around' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "25vw",
+            justifyContent: "space-around",
+          }}
+        >
           <IconButton edge="edge" color="inherit" aria-label="menu">
-            <img src={logo} alt="logo" width="100" height="50" />
+            <Link to={userData ? `/${userData?.type}/dashboard` : "/"}>
+              <img src={logo} alt="logo" width="100" height="50" />
+            </Link>
           </IconButton>
-          {/* <Typography variant="h5" mt={20}>My Best Nanny</Typography> */}
-          <h3 style={{ display: "flex", alignSelf: 'center' }}>My Best Nanny</h3>
+          <h3 style={{ display: "flex", alignSelf: "center" }}>
+            My Best Nanny
+          </h3>
         </div>
-        <div style={{ display: 'flex', flexDirection: "row", width: '25vw', justifyContent: 'space-around' }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "25vw",
+            justifyContent: "space-around",
+          }}
+        >
           <Button color="inherit" onClick={handleFirstClick}>
             {props.button1}
           </Button>
@@ -54,7 +66,6 @@ const Navbar = (props) => {
             {props.button2}
           </Button>
         </div>
-
       </Toolbar>
     </AppBar>
   );
