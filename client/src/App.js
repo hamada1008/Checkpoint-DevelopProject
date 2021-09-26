@@ -50,13 +50,13 @@ function App() {
 
             <Route
               exact
-              path="/parent/search/results"
-              component={SearchResult}
+              path="/parent/search/:servicetype"
+              component={SearchForm}
             />
             <Route
               exact
-              path="/parent/search/:servicetype"
-              component={SearchForm}
+              path="/parent/search-results"
+              component={SearchResult}
             />
             <Route
               exact

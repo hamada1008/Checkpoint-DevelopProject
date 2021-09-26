@@ -22,17 +22,13 @@ const parentSchema = new mongoose.Schema({
   phone: String,
   age: Number,
 
-
-  city: String,
+  city: { type: String, lowercase: true },
   lat: Number,
   lng: Number,
   rating: Number,
   priceMin: Number,
   priceMax: Number,
   NannyPrice: Number,
-
-
-
 });
 parentSchema.plugin(
   passportLocalMongoose

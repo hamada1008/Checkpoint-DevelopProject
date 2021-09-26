@@ -72,21 +72,19 @@ const EditProfile = () => {
           setFormData({
             ...formData,
             city:
-              result.data.address.city ||
-              result.data.address.town ||
-              result.data.address.state ||
-              result.data.display_name,
+              result.data.address.city.toLowerCase() ||
+              result.data.address.town.toLowerCase() ||
+              result.data.address.state.toLowerCase() ||
+              result.data.display_name.toLowerCase(),
           });
         })
         .catch((err) => console.log(err));
   }, [formData?.lat]);
 
   const handleCityChange = (e) => {
-    if (e.target.value !== "selectCity") {
-      console.log(e.target.value);
+    if (e.target.value.toLowerCase() !== "selectCity") {
       const { lng, lat, ...rest } = formData;
-      console.log(rest);
-      setFormData({ ...rest, city: e.target.value });
+      setFormData({ ...rest, city: e.target.value.toLowerCase() });
     }
   };
 

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import passportLocalMongoose from 'passport-local-mongoose'
-import findOrCreate from 'mongoose-findorcreate'
+import passportLocalMongoose from "passport-local-mongoose";
+import findOrCreate from "mongoose-findorcreate";
 
 const nannySchema = new mongoose.Schema({
   email: {
@@ -29,6 +29,7 @@ const nannySchema = new mongoose.Schema({
   },
   city: {
     type: String,
+    lowercase: true,
     //required:true
   },
   lat: Number,

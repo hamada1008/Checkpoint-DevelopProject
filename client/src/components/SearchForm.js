@@ -26,13 +26,13 @@ const SearchForm = ({ match }) => {
       setErrorMessage({ errorPrice: "please entre a valid Price" });
     } else {
       dispatch(searchNannies(formData));
-      history.push("/parent/search/results");
+      history.push("/parent/search-results");
     }
   };
   const handleCityChange = (e) => {
-    if (e.target.value !== "selectCity") {
+    if (e.target.value.toLowerCase() !== "selectCity") {
       const { lng, lat, ...rest } = formData;
-      setFormData({ ...rest, city: e.target.value });
+      setFormData({ ...rest, city: e.target.value.toLowerCase() });
     }
   };
   return (
@@ -112,7 +112,7 @@ const SearchForm = ({ match }) => {
           >
             <option value={formData.city}>{formData.city}</option>
             <option value="Nabeul">Nabeul</option>
-            <option value="Béni khiar">Béni Khiar</option>
+            <option value="Beni khiar">Béni Khiar</option>
             <option value="Korba">Korba</option>
             <option value="Maamoura">Maamoura</option>
             <option value="Tunis">Tunis</option>

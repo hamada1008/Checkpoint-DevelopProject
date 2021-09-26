@@ -85,7 +85,6 @@ function Form() {
     setChecked(!checked);
     setFormData({ ...formData, type: e.target.name });
   };
-  console.log(authState);
   return (
     <div className="form_and_button_container">
       <Box
