@@ -59,14 +59,13 @@ const Dashboard = (props) => {
           <ServiceCard nannyType="NannyOut" />
         </div>
       ) : (
-        <div>
+        <div className="availability-status">
           <p>Availability</p>
           <Switch
             checked={checked}
             onChange={handleSwitcherChange}
             inputProps={{ "aria-label": "controlled" }}
           />
-          <img src={userDataAfterUpdate?.image} alt="blabla" />
         </div>
       )}
     </div>

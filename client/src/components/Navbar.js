@@ -1,9 +1,15 @@
 import React from "react";
-import { AppBar, Toolbar, IconButton, Button } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  Typography,
+  Avatar,
+} from "@material-ui/core";
 import { useHistory } from "react-router";
 import { logoutAuth } from "../redux/authReducer";
 import { useDispatch, useSelector } from "react-redux";
-// import { profileLogout } from "../redux/editProfileReducer";
 import { makeStyles } from "@material-ui/core";
 import logo from "../img/logo.svg";
 import { Link } from "react-router-dom";
@@ -12,6 +18,12 @@ const useStyle = makeStyles({
   navbar: {
     display: "Flex",
     justifyContent: "space-between",
+    alignItems: "center",
+  },
+  nameAvatar: {
+    fontSize: "1em",
+    alignSelf: "center",
+    fontWeight: "bold",
   },
 });
 
@@ -26,11 +38,13 @@ const Navbar = (props) => {
   const handleSecondClick = () => {
     if (props.button2 === "Logout") {
       dispatch(logoutAuth());
-      // dispatch(profileLogout());
       history.push("/");
     }
   };
 
+  const userDataAfterUpdate = useSelector(
+    (state) => state.editProfileReducer.userDataAfterUpdate
+  );
   return (
     <AppBar position="static" color="d">
       <Toolbar className={classes.navbar}>
@@ -59,6 +73,21 @@ const Navbar = (props) => {
             justifyContent: "space-around",
           }}
         >
+          {userData && userDataAfterUpdate && (
+            <>
+              <Avatar>
+                {userDataAfterUpdate?.fullName?.charAt(0)}
+                {userDataAfterUpdate?.fullName?.split(" ")[1].charAt(0)}
+              </Avatar>
+              <Typography
+                className={classes.nameAvatar}
+                color="primary"
+                variant="h5"
+              >
+                {userDataAfterUpdate.fullName}
+              </Typography>
+            </>
+          )}
           <Button color="inherit" onClick={handleFirstClick}>
             {props.button1}
           </Button>

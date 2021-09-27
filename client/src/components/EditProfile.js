@@ -72,10 +72,10 @@ const EditProfile = () => {
           setFormData({
             ...formData,
             city:
-              result.data.address.city.toLowerCase() ||
-              result.data.address.town.toLowerCase() ||
-              result.data.address.state.toLowerCase() ||
-              result.data.display_name.toLowerCase(),
+              result?.data?.address?.city?.toLowerCase() ||
+              result?.data?.address?.town?.toLowerCase() ||
+              result?.data?.address?.state?.toLowerCase() ||
+              result?.data?.display_name.toLowerCase(),
           });
         })
         .catch((err) => console.log(err));

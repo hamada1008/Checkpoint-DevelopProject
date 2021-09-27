@@ -10,13 +10,14 @@ import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
 import cityCenters from "../Data/cityCenter";
 import ReactLoading from "react-loading";
-import feedingBottle from "../img/FB.svg";
+import pin from "../img/map pin.png";
 const SearchResult = () => {
   const mapContainerStyle = {
     height: "80vh",
     width: "80vw",
     margin: "2.5% auto",
     borderRadius: 5,
+    position: "relative",
   };
 
   const searchResultData = useSelector(
@@ -58,11 +59,10 @@ const SearchResult = () => {
   if (searchStatus !== "loading" && searchResultData.length === 0) {
     return (
       <>
-        {" "}
         <Navbar button1="Edit profile" button2="Logout" />
         <h3 style={{ textAlign: "center", marginTop: 20 }}>
           Your search did not find any matches
-        </h3>{" "}
+        </h3>
       </>
     );
   }
@@ -89,7 +89,7 @@ const SearchResult = () => {
             }}
           />
         ))}
-
+        <img src={pin} className="map-pin" />
         {selectedNanny && (
           <InfoWindow
             onCloseClick={() => {

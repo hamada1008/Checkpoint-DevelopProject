@@ -17,6 +17,7 @@
 }
 .nannyInfo {
   flex-direction: column;
+  margin-left: -100px;
 }
 
 .offcanvasBtn {

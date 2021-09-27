@@ -87,7 +87,7 @@ const NannyProfile = (match) => {
               {selectedNanny.city}
             </p>
             <p>
-              <strong>Pricing: </strong> {selectedNanny.pricing}
+              <strong>Pricing: </strong> ${selectedNanny.pricing}
             </p>
             <p>
               <strong>Age: </strong>
