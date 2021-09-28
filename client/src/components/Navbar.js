@@ -33,12 +33,18 @@ const Navbar = (props) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.authR.userData);
   const handleFirstClick = () => {
-    props.button1 === "Edit profile" && history.push("/profile");
+    if (props.button1 === "Edit profile") {
+      history.push("/profile");
+    } else {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
   };
   const handleSecondClick = () => {
     if (props.button2 === "Logout") {
       dispatch(logoutAuth());
       history.push("/");
+    } else {
+      window.scrollTo(0, document.getElementById("about-us").scrollHeight);
     }
   };
 
@@ -46,7 +52,7 @@ const Navbar = (props) => {
     (state) => state.editProfileReducer.userDataAfterUpdate
   );
   return (
-    <AppBar position="static" color="d">
+    <AppBar position="static" color="default">
       <Toolbar className={classes.navbar}>
         <div
           style={{
@@ -56,7 +62,7 @@ const Navbar = (props) => {
             justifyContent: "space-around",
           }}
         >
-          <IconButton edge="edge" color="inherit" aria-label="menu">
+          <IconButton edge="start" color="inherit" aria-label="menu">
             <Link to={userData ? `/${userData?.type}/dashboard` : "/"}>
               <img src={logo} alt="logo" width="100" height="50" />
             </Link>
@@ -77,7 +83,7 @@ const Navbar = (props) => {
             <>
               <Avatar>
                 {userDataAfterUpdate?.fullName?.charAt(0)}
-                {userDataAfterUpdate?.fullName?.split(" ")[1].charAt(0)}
+                {userDataAfterUpdate?.fullName?.split(" ")[1]?.charAt(0)}
               </Avatar>
               <Typography
                 className={classes.nameAvatar}

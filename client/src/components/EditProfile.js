@@ -55,10 +55,6 @@ const EditProfile = () => {
       history.push(`/${type}/dashboard`);
     }
   };
-  // const [dataLoaded, setDataLoaded] = useState(false);
-  // useEffect(() => {
-  //   dispatch(getEditedProfileData({ id: userData._id, type: userData.type }));
-  // }, []);
   useEffect(() => {
     setFormData(userDataAfterUpdate);
   }, [userDataAfterUpdate]);

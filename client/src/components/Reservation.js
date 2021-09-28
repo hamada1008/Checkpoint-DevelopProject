@@ -42,14 +42,14 @@ const Reservation = (props) => {
       </div>
 
       {props.productsPurchased.length !== 0 ? (
-        <p className="productsOrdered">
+        <div className="productsOrdered">
           <strong> purchasedProducts :</strong>
           {props.productsPurchased.map((el) => (
-            <p className="oneProductOrdered" key={el.id}>
+            <p className="oneProductOrdered" key={el._id}>
               {el.title}
             </p>
           ))}
-        </p>
+        </div>
       ) : (
         <img
           className="productsOrderedAlt"

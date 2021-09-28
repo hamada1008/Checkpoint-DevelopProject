@@ -28,10 +28,7 @@ export const getEditedProfileData = createAsyncThunk(
 const editProfileReducer = createSlice({
   name: "editProfile",
   initialState,
-  // reducers: {
-  //   profileLogout: state => state = initialState,
 
-  // },
   extraReducers: {
     [editProfile.pending]: (state) => {
       state.status = "loading";

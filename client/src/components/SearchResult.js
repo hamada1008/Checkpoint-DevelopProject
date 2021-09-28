@@ -16,7 +16,7 @@ const SearchResult = () => {
     height: "80vh",
     width: "80vw",
     margin: "2.5% auto",
-    borderRadius: 5,
+    borderRadius: 15,
     position: "relative",
   };
 
@@ -89,7 +89,7 @@ const SearchResult = () => {
             }}
           />
         ))}
-        <img src={pin} className="map-pin" />
+        <img src={pin} className="map-pin" alt="map-pin" />
         {selectedNanny && (
           <InfoWindow
             onCloseClick={() => {

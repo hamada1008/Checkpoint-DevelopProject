@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Navbar from "./Navbar";
-import editProfileReducer from "../redux/editProfileReducer";
 import { useDispatch } from "react-redux";
 import { searchNannies } from "../redux/searchReducer";
 

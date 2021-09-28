@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   input: {
-    overflow: "hidden",
     borderRadius: 3,
     boxShadow: "0px 10px 10px 5px #65b363",
     height: 55,
@@ -21,7 +20,7 @@ const useStyles = makeStyles({
     "& #outlined-basic-label": {
       color: "black",
       zIndex: 2,
-      marginTop: 3,
+      marginTop: 5,
       width: "inherit",
     },
     "& .MuiOutlinedInput-root": {
@@ -196,7 +195,12 @@ function Form() {
       <br />
       <p
         onClick={() => setUserIsRegistered(!userIsRegistered)}
-        style={{ cursor: "pointer", width: "35vw", textAlign: "center" }}
+        style={{
+          cursor: "pointer",
+          width: "35vw",
+          textAlign: "center",
+          textDecoration: "underline",
+        }}
       >
         {userIsRegistered
           ? "Already have an account?"

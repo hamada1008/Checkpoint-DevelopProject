@@ -236,7 +236,7 @@ body {
 }
 
 .availability-status {
-  position: absolute;
+  position: fixed;
   right: 5%;
   top: 15vh;
   text-align: center;
@@ -248,4 +248,5 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.479);
+  border-radius: 20px;
 }

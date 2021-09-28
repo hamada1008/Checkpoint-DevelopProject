@@ -16,10 +16,6 @@ const NannyProfile = (match) => {
   const searchResultData = useSelector(
     (state) => state.searchReducer.searchResultData
   );
-  const { userDataAfterUpdate } = useSelector(
-    (state) => state.editProfileReducer
-  );
-
   const selectedNanny = searchResultData.filter(
     (el) => el._id === match.match.params.nanny_id
   )[0];
@@ -55,7 +51,6 @@ const NannyProfile = (match) => {
   const totalPrice =
     totalPriceArray.length !== 0 && totalPriceArray.reduce((pv, cv) => pv + cv);
   const date = new Date();
-  // const currentDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
 
   const currentDate = date.toLocaleDateString("sv-SE", {
     day: "2-digit",
@@ -162,10 +157,10 @@ const NannyProfile = (match) => {
             <p>
               Your Total shopping cart price is :<strong> ${totalPrice}</strong>
             </p>
-            <p>
+            <>
               <strong> Purchased products are :</strong>
               {currentShoppingItems.map((el) => (
-                <ul>
+                <ul key={el.id}>
                   <li>
                     <span> {el.qty}</span>
                     <span> {el.title}</span>
@@ -173,7 +168,7 @@ const NannyProfile = (match) => {
                   </li>
                 </ul>
               ))}
-            </p>
+            </>
           </div>
         )}
       </div>

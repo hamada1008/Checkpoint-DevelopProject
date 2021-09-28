@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-} from "@material-ui/core";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
@@ -52,7 +46,7 @@ const ServiceCard = (props) => {
           </Typography>
         </CardContent>
         <CardContent>
-          <Typography className={classes.textP} variant="p" component="p">
+          <Typography className={classes.textP} variant="body1" component="p">
             {props.nannyType === "NannyIn"
               ? "Hire a professional nanny to come and take care of your kids inside your home vicinity"
               : "Bring your kids to one of our nannies that will take care of your children in her house"}

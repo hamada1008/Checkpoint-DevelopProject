@@ -30,7 +30,7 @@ const CartItem = (props) => {
   }, [qty]);
 
   return (
-    <div className="cartItem" key={props.key}>
+    <div className="cartItem">
       <input
         className="cartQty"
         value={qty}
