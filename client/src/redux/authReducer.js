@@ -4,11 +4,10 @@ const initialState = {
   status: "loading",
   token: null,
   userData: null,
-
 };
 export const loginAuth = createAsyncThunk("auth/isAuth", async (payload) => {
   const token = await axios.post(
-    "http://localhost:5000/api/auth/login",
+    "/api/auth/login" || "http://localhost:5000/api/auth/login",
     payload
   );
   return token;
@@ -18,19 +17,21 @@ export const registerAuth = createAsyncThunk(
   "registerAuth/isAuth",
   async (payload) => {
     const token = await axios.post(
-      "http://localhost:5000/api/auth/register",
+      "/api/auth/register" || "http://localhost:5000/api/auth/register",
       payload
     );
     return token;
   }
 );
 export const logoutAuth = createAsyncThunk("logoutAuth/isAuth", async () => {
-  await axios.get("http://localhost:5000/api/auth/logout");
+  await axios.get(
+    "/api/auth/logout" || "http://localhost:5000/api/auth/logout"
+  );
 });
 
 export const getToken = createAsyncThunk("getToken/isAuth", async (payload) => {
   const data = await axios.post(
-    "http://localhost:5000/api/auth/token",
+    "/api/auth/token" || "http://localhost:5000/api/auth/token",
     payload
   );
   return data;

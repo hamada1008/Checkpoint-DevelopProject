@@ -5,7 +5,7 @@ const initialState = {
   orderData: [],
   dataChanged: false,
 };
-const url = "http://localhost:5000/api/order/";
+const url = "/api/order/" || "http://localhost:5000/api/order/";
 export const fetchOrders = createAsyncThunk(
   "orders/getOrders",
   async (payload) => {
@@ -46,7 +46,6 @@ const orderReducer = createSlice({
     [createOrder.fulfilled]: (state) => {
       state.status = "succeeded";
       state.dataChanged = !state.dataChanged;
-
     },
     [createOrder.rejected]: (state) => {
       state.status = "rejected";
