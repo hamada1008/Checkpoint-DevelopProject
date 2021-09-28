@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import googleUser from "./models/googleUser.js";
 import {} from "dotenv/config";
-import bcrypt from "bcrypt";
 import authRouter from "./router/authRouter.js";
 import settingRouter from "./router/settingRouter.js";
 import searchRouter from "./router/searchRouter.js";
@@ -11,14 +10,12 @@ import orderRouter from "./router/orderRouter.js";
 import session from "express-session";
 import passport from "passport";
 import Strategy from "passport-local";
-import passportLocalMongoose from "passport-local-mongoose";
 import nanny from "./models/nanny.js";
 import parent from "./models/parent.js";
 import gStrategy from "passport-google-oauth20";
 const GoogleStrategy = gStrategy.Strategy;
 const LocalStrategy = Strategy.Strategy;
-import findOrCreate from "mongoose-findorcreate";
-import order from "./models/order.js";
+import * as path from "path";
 const app = Express();
 app.use(Express.json({ extended: true, limit: "30mb" }));
 app.use(Express.urlencoded({ extended: true, limit: "30mb" }));
@@ -72,3 +69,10 @@ app.use("/api", authRouter);
 app.use("/api", settingRouter);
 app.use("/api", searchRouter);
 app.use("/api", orderRouter);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
