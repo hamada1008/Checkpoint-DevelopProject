@@ -10,7 +10,7 @@ export const editProfile = createAsyncThunk(
   "editProfile/isEdited",
   async (payload) => {
     const data = await axios.patch(
-      "/api/profile" || "http://localhost:5000/api/profile",
+      "http://localhost:5000/api/profile",
       payload
     );
     return data;
@@ -20,10 +20,7 @@ export const editProfile = createAsyncThunk(
 export const getEditedProfileData = createAsyncThunk(
   "editedProdile/isUpdated",
   async (payload) => {
-    const data = await axios.post(
-      "/api/profile" || "http://localhost:5000/api/profile",
-      payload
-    );
+    const data = await axios.post("http://localhost:5000/api/profile", payload);
     return data;
   }
 );

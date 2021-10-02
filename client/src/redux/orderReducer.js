@@ -5,7 +5,7 @@ const initialState = {
   orderData: [],
   dataChanged: false,
 };
-const url = "/api/order/" || "http://localhost:5000/api/order/";
+const url = "http://localhost:5000/api/order/";
 export const fetchOrders = createAsyncThunk(
   "orders/getOrders",
   async (payload) => {

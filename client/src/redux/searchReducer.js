@@ -9,10 +9,7 @@ const initialState = {
 export const searchNannies = createAsyncThunk(
   "searchNannies/isFound",
   async (payload) => {
-    const data = await axios.post(
-      "/api/search" || "http://localhost:5000/api/search",
-      payload
-    );
+    const data = await axios.post("http://localhost:5000/api/search", payload);
     return data;
   }
 );
