@@ -37,6 +37,10 @@ const Reservation = (props) => {
           {props.targetData.city}
         </p>
         <p>
+          <strong>{`${targetType}'s phone`} : </strong>
+          {props.targetData.phone}
+        </p>
+        <p>
           <strong>Price: </strong>${props.totalPrice}
         </p>
       </div>

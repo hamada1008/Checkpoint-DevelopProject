@@ -54,7 +54,7 @@ router.post("/order/fetch", async (req, res) => {
       var allData = await order.find({ parent_id: req.body.id });
       for (let i = 0; i < allData.length; i++) {
         const query = await nanny
-          .findById(allData[i].nanny_id, { fullName: 1, city: 1 })
+          .findById(allData[i].nanny_id, { fullName: 1, city: 1, phone: 1 })
           .exec();
         allData[i] = { userData: allData[i], targetData: query };
       }
@@ -63,7 +63,7 @@ router.post("/order/fetch", async (req, res) => {
       var allData = await order.find({ nanny_id: req.body.id });
       for (let i = 0; i < allData.length; i++) {
         const query = await parent
-          .findById(allData[i].parent_id, { fullName: 1, city: 1 })
+          .findById(allData[i].parent_id, { fullName: 1, city: 1, phone: 1 })
           .exec();
         allData[i] = { userData: allData[i], targetData: query };
       }
