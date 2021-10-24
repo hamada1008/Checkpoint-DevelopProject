@@ -15,7 +15,7 @@ const SearchResult = () => {
   const mapContainerStyle = {
     height: "80vh",
     width: "80vw",
-    margin: "2.5% auto",
+    margin: "calc(2.5% + 80px) auto",
     borderRadius: 15,
     position: "relative",
   };

@@ -1,37 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import url from "../Data/url.js";
+
 const initialState = {
   status: "loading",
   token: null,
   userData: null,
 };
 export const loginAuth = createAsyncThunk("auth/isAuth", async (payload) => {
-  const token = await axios.post(
-    "http://localhost:5000/api/auth/login",
-    payload
-  );
+  const token = await axios.post(`${url}/auth/login`, payload);
   return token;
 });
 
 export const registerAuth = createAsyncThunk(
   "registerAuth/isAuth",
   async (payload) => {
-    const token = await axios.post(
-      "http://localhost:5000/api/auth/register",
-      payload
-    );
+    const token = await axios.post(`${url}/auth/register`, payload);
     return token;
   }
 );
 export const logoutAuth = createAsyncThunk("logoutAuth/isAuth", async () => {
-  await axios.get("http://localhost:5000/api/auth/logout");
+  await axios.get(`${url}/auth/logout`);
 });
 
 export const getToken = createAsyncThunk("getToken/isAuth", async (payload) => {
-  const data = await axios.post(
-    "http://localhost:5000/api/auth/token",
-    payload
-  );
+  const data = await axios.post(`${url}/auth/token`, payload);
   return data;
 });
 const authReducer = createSlice({

@@ -124,7 +124,7 @@ body {
 }
 .formProfile {
   display: flex;
-  margin: min(5%, 80px) auto;
+  margin: calc(min(5%, 80px) + 50px) auto;
   flex-flow: column wrap;
   width: min(550px, 70%);
   border: 3px dashed black;

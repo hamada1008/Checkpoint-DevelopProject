@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import url from "../Data/url.js";
 
 const initialState = {
   status: "loading",
@@ -9,10 +10,7 @@ const initialState = {
 export const editProfile = createAsyncThunk(
   "editProfile/isEdited",
   async (payload) => {
-    const data = await axios.patch(
-      "http://localhost:5000/api/profile",
-      payload
-    );
+    const data = await axios.patch(`${url}/profile`, payload);
     return data;
   }
 );
@@ -20,7 +18,7 @@ export const editProfile = createAsyncThunk(
 export const getEditedProfileData = createAsyncThunk(
   "editedProdile/isUpdated",
   async (payload) => {
-    const data = await axios.post("http://localhost:5000/api/profile", payload);
+    const data = await axios.post(`${url}/profile`, payload);
     return data;
   }
 );

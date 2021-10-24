@@ -99,8 +99,8 @@ const NannyProfile = (match) => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <div className="shoppingCartBody">
-              <p style={{ alignSelf: "center" }}>
-                Total: $ {totalPrice ? totalPrice : 0}{" "}
+              <p style={{ alignSelf: "center", paddingTop: 50 }}>
+                Total: $ {totalPrice ? totalPrice : 0}
               </p>
               {currentShoppingItems.map((el) => (
                 <CartItem

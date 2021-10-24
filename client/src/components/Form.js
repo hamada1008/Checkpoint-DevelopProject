@@ -60,11 +60,11 @@ function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (userIsRegistered) {
-      if (!validator.validate(formData.email)) {
+      if (!validator.validate(formData?.email)) {
         setErrorMessage({ errorEmail: "Verify your Email" });
-      } else if (formData.password.length < 4) {
+      } else if (formData?.password.length < 4) {
         setErrorMessage({ errorPassword: "Verify your Password" });
-      } else if (formData.username.length === 0) {
+      } else if (formData?.username.length === 0) {
         setErrorMessage({ errorUsername: "Verify your userName" });
       } else {
         dispatch(registerAuth(formData));

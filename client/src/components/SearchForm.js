@@ -17,11 +17,14 @@ const SearchForm = ({ match }) => {
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    if (formData.rating < 0 && formData.Rating > 5) {
+    if (formData?.rating < 0 && formData?.Rating > 5) {
       setErrorMessage({ errorRating: "Rating must be between 0 and 5" });
-    } else if (!Number(formData.age)) {
+    } else if (!Number(formData?.age)) {
       setErrorMessage({ errorAge: "Please enter a valid age" });
-    } else if (formData.priceMin < 0 || formData.priceMin > formData.priceMax) {
+    } else if (
+      formData?.priceMin < 0 ||
+      formData?.priceMin > formData?.priceMax
+    ) {
       setErrorMessage({ errorPrice: "please entre a valid Price" });
     } else {
       dispatch(searchNannies(formData));
@@ -29,7 +32,7 @@ const SearchForm = ({ match }) => {
     }
   };
   const handleCityChange = (e) => {
-    if (e.target.value.toLowerCase() !== "selectCity") {
+    if (e.target.value.toLowerCase() !== "selectCity" && !!formData) {
       const { lng, lat, ...rest } = formData;
       setFormData({ ...rest, city: e.target.value.toLowerCase() });
     }
@@ -54,7 +57,7 @@ const SearchForm = ({ match }) => {
             className="fieldInput fieldInputNumber"
             type="text"
             placeholder="age"
-            value={formData.age}
+            value={formData?.age}
             onChange={(e) => setFormData({ ...formData, age: e.target.value })}
           />
         </div>
@@ -67,7 +70,7 @@ const SearchForm = ({ match }) => {
             className="fieldInput fieldInputNumber"
             type="text"
             placeholder="rating"
-            value={formData.rating}
+            value={formData?.rating}
             onChange={(e) =>
               setFormData({ ...formData, rating: e.target.value })
             }
@@ -83,7 +86,7 @@ const SearchForm = ({ match }) => {
             className="fieldInput fieldInputNumber"
             type="text"
             placeholder="price min"
-            value={formData.priceMin}
+            value={formData?.priceMin}
             onChange={(e) =>
               setFormData({ ...formData, priceMin: e.target.value })
             }
@@ -92,7 +95,7 @@ const SearchForm = ({ match }) => {
             className="fieldInput fieldInputNumber"
             type="text"
             placeholder="price max"
-            value={formData.priceMax}
+            value={formData?.priceMax}
             onChange={(e) =>
               setFormData({ ...formData, priceMax: e.target.value })
             }
@@ -109,7 +112,7 @@ const SearchForm = ({ match }) => {
             name="cityDropdown"
             onChange={handleCityChange}
           >
-            <option value={formData.city}>{formData.city}</option>
+            <option value={formData?.city}>{formData?.city}</option>
             <option value="Nabeul">Nabeul</option>
             <option value="Beni khiar">Béni Khiar</option>
             <option value="Korba">Korba</option>

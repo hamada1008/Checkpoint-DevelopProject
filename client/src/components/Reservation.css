@@ -21,7 +21,7 @@
     #f9f5f0
   );
   width: 40%;
-  min-height: 220px;
+  min-height: 300px;
   margin: 20px 0;
   border: solid black 1px;
   border-radius: 20px;
@@ -51,14 +51,7 @@
   flex-flow: column wrap;
   font-size: 1.1rem;
 }
-.targetData p:nth-child(2) {
-  place-self: center;
-  margin-left: -50px;
-}
-.targetData p:nth-child(3) {
-  place-self: center;
-  margin-left: 30px;
-}
+
 .productsOrdered {
   grid-row: 2;
   grid-column: 2;
@@ -88,7 +81,7 @@
   color: red;
 }
 .orderContainer {
-  margin: 5% 0;
+  margin: calc(5% + 50px) 0;
   display: flex;
   flex-flow: column wrap;
   align-items: center;

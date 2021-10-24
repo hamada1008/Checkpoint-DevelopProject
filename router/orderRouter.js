@@ -12,42 +12,6 @@ router.post("/order/create", (req, res) => {
   });
 });
 
-// router.post("/order/fetch", (req, res) => {
-//   if (req.body.type === "parent") {
-//     var nannyData;
-//     nanny.findById(req.body.targetId, { fullName: 1, city: 1 }, (err, data) => {
-//       if (err) {
-//         res.send("error finding nanny");
-//       } else {
-//         nannyData = data;
-//       }
-//     });
-//     order.find({ parent_id: req.body.id }, (err, data) => {
-//       err
-//         ? res.status(404).send(err)
-//         : res.status(200).send({ ...data, nannyData });
-//     });
-//   } else {
-//     var parentData;
-//     parent.findById(
-//       req.body.targetId,
-//       { fullName: 1, city: 1 },
-//       (err, data) => {
-//         if (err) {
-//           res.send("error finding parent");
-//         } else {
-//           parentData = data;
-//         }
-//       }
-//     );
-//     order.find({ nanny_id: req.body.id }, (err, data) => {
-//       err
-//         ? res.status(404).send(err)
-//         : res.status(200).send({ ...data, parentData });
-//     });
-//   }
-// });
-
 router.post("/order/fetch", async (req, res) => {
   try {
     if (req.body.type === "parent") {

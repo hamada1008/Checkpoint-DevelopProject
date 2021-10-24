@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import url from "../Data/url.js";
 
 const initialState = {
   status: "loading",
@@ -9,7 +10,7 @@ const initialState = {
 export const searchNannies = createAsyncThunk(
   "searchNannies/isFound",
   async (payload) => {
-    const data = await axios.post("http://localhost:5000/api/search", payload);
+    const data = await axios.post(`${url}/search`, payload);
     return data;
   }
 );

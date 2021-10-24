@@ -1,29 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import url from "../Data/url.js";
+
 const initialState = {
   status: "loading",
   orderData: [],
   dataChanged: false,
 };
-const url = "http://localhost:5000/api/order/";
 export const fetchOrders = createAsyncThunk(
   "orders/getOrders",
   async (payload) => {
-    const data = await axios.post(`${url}fetch`, payload);
+    const data = await axios.post(`${url}/order/fetch`, payload);
     return data;
   }
 );
 export const createOrder = createAsyncThunk(
   "orders/createOrders",
   async (payload) => {
-    await axios.post(`${url}create`, payload);
+    await axios.post(`${url}/order/create`, payload);
   }
 );
 
 export const deleteOrder = createAsyncThunk(
   "orders/deleteOrders",
   async (payload) => {
-    await axios.put(`${url}delete`, payload);
+    await axios.put(`${url}/order/delete`, payload);
   }
 );
 const orderReducer = createSlice({

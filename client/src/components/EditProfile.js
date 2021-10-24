@@ -38,15 +38,18 @@ const EditProfile = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    if (!formData.fullName) {
+    if (!formData?.fullName) {
       setErrorMessage({ errorfullName: "Please enter a valide Name" });
-    } else if (!formData.phone) {
+    } else if (!formData?.phone) {
       setErrorMessage({ errorPhone: "Please enter a valide Phone Number" });
-    } else if (formData.rating < 0 && formData.Rating > 5) {
+    } else if (formData?.rating < 0 && formData?.Rating > 5) {
       setErrorMessage({ errorRating: "Rating must be between 0 and 5" });
-    } else if (!Number(formData.age)) {
+    } else if (!Number(formData?.age)) {
       setErrorMessage({ errorAge: "Please enter a valid age" });
-    } else if (formData.priceMin < 0 && formData.priceMin > formData.priceMax) {
+    } else if (
+      formData?.priceMin < 0 &&
+      formData?.priceMin > formData?.priceMax
+    ) {
       setErrorMessage({ errorPrice: "please entre a valid Price" });
     } else {
       dispatch(
@@ -59,10 +62,10 @@ const EditProfile = () => {
     setFormData(userDataAfterUpdate);
   }, [userDataAfterUpdate]);
   useEffect(() => {
-    formData.lng &&
+    formData?.lng &&
       axios
         .get(
-          `https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData.lat}&lon=${formData.lng}&format=json`
+          `https://eu1.locationiq.com/v1/reverse.php?key=pk.4a75d679e443c41d0a8b09ba9eed7274&lat=${formData?.lat}&lon=${formData?.lng}&format=json`
         )
         .then((result) => {
           setFormData({
@@ -95,12 +98,12 @@ const EditProfile = () => {
           <input
             className="fieldInput"
             type="text"
-            // value={formData.fullName}
-            value={formData.fullName}
+            // value={formData?.fullName}
+            value={formData?.fullName}
             onChange={(e) =>
               setFormData({ ...formData, fullName: e.target.value })
             }
-            placeholder={formData.fullName}
+            placeholder={formData?.fullName}
           />
         </div>
         {errorMessage.errorfullName && (
@@ -111,7 +114,7 @@ const EditProfile = () => {
           <input
             className="fieldInput"
             type="text"
-            value={formData.phone}
+            value={formData?.phone}
             onChange={(e) =>
               setFormData({ ...formData, phone: e.target.value })
             }
@@ -133,7 +136,7 @@ const EditProfile = () => {
               className="fieldInput fieldInputNumber"
               type="text"
               placeholder="Minimum Rating"
-              value={formData.rating}
+              value={formData?.rating}
               onChange={(e) =>
                 setFormData({ ...formData, rating: e.target.value })
               }
@@ -149,7 +152,7 @@ const EditProfile = () => {
             className="fieldInput fieldInputNumber"
             type="text"
             placeholder="age"
-            value={formData.age}
+            value={formData?.age}
             onChange={(e) => setFormData({ ...formData, age: e.target.value })}
           />
         </div>
@@ -165,7 +168,7 @@ const EditProfile = () => {
                 className="fieldInput fieldInputNumber"
                 type="text"
                 placeholder="price min"
-                value={formData.priceMin}
+                value={formData?.priceMin}
                 onChange={(e) =>
                   setFormData({ ...formData, priceMin: e.target.value })
                 }
@@ -174,7 +177,7 @@ const EditProfile = () => {
                 className="fieldInput fieldInputNumber"
                 type="text"
                 placeholder="price max"
-                value={formData.priceMax}
+                value={formData?.priceMax}
                 onChange={(e) =>
                   setFormData({ ...formData, priceMax: e.target.value })
                 }
@@ -190,7 +193,7 @@ const EditProfile = () => {
                 className="fieldInput fieldInputNumber"
                 type="text"
                 placeholder="Your Pricing"
-                value={formData.pricing}
+                value={formData?.pricing}
                 onChange={(e) =>
                   setFormData({ ...formData, pricing: e.target.value })
                 }
@@ -221,7 +224,7 @@ const EditProfile = () => {
               onChange={handleCityChange}
             >
               <option value="selectCity">Select a City</option>
-              <option value={formData.city}>{formData.city}</option>
+              <option value={formData?.city}>{formData?.city}</option>
               <option value="nabeul">Nabeul</option>
               <option value="beni khiar">Béni Khiar</option>
               <option value="Korba">Korba</option>
@@ -233,7 +236,7 @@ const EditProfile = () => {
               className="fieldInput"
               type="text"
               placeholder="city"
-              value={formData.city}
+              value={formData?.city}
               disabled={true}
             />
           )}

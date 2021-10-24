@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import logo from "../img/logo.svg";
 import { Link } from "react-router-dom";
+import { slide as Menu } from "react-burger-menu";
+import bars from "../img/bars.svg";
 
 const useStyle = makeStyles({
   navbar: {
@@ -32,6 +34,13 @@ const Navbar = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.authR.userData);
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+  var deviceWidth = window.screen.width;
+  useEffect(() => {
+    window.screen.width > 1000
+      ? setIsHamburgerOpen(false)
+      : setIsHamburgerOpen(true);
+  }, [deviceWidth]);
   const handleFirstClick = () => {
     if (props.button1 === "Edit profile") {
       history.push("/profile");
@@ -51,8 +60,9 @@ const Navbar = (props) => {
   const userDataAfterUpdate = useSelector(
     (state) => state.editProfileReducer.userDataAfterUpdate
   );
+
   return (
-    <AppBar position="static" color="default">
+    <AppBar position="fixed" color="default">
       <Toolbar className={classes.navbar}>
         <div
           style={{
@@ -100,6 +110,23 @@ const Navbar = (props) => {
           <Button color="inherit" onClick={handleSecondClick}>
             {props.button2}
           </Button>
+          {/* hamburger */}
+          {isHamburgerOpen && (
+            <Menu
+              isOpen={false}
+              right
+              customBurgerIcon={
+                <img src={bars} alt="bars" style={{ width: 50, height: 50 }} />
+              }
+            >
+              <Button color="inherit" onClick={handleFirstClick}>
+                {props.button1}
+              </Button>
+              <Button color="inherit" onClick={handleSecondClick}>
+                {props.button2}
+              </Button>
+            </Menu>
+          )}
         </div>
       </Toolbar>
     </AppBar>
